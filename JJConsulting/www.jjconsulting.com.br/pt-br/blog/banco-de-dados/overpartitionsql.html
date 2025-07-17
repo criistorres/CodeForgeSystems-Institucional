@@ -1,0 +1,534 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+
+<!-- Mirrored from www.jjconsulting.com.br/pt-br/blog/banco-de-dados/overpartitionsql by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 10 Jul 2025 14:47:43 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+    <meta charset="utf-8"/>
+    <title>Utilizando a fun&#xE7;&#xE3;o OVER() no SQL Server</title>
+
+    <meta name="language" content="pt-BR" />
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    
+    <meta name="description" content="Aprenda como calcular totais e m&#xE9;dias no SQL Server sem usar GROUP BY neste artigo." />
+    <meta name="author" content="Ygor dos Santos Silva" />
+    <meta name="robots" content="index, follow" />
+    <meta name="keywords" content="overpartition,sql server,corinthians" />
+
+
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="Utilizando a fun&#xE7;&#xE3;o OVER() no SQL Server" />
+    <meta property="og:description" content="Aprenda como calcular totais e m&#xE9;dias no SQL Server sem usar GROUP BY neste artigo." />
+
+    <meta property="og:url" content="overpartitionsql.html" />
+    <meta property="og:site_name" content="JJConsulting" />
+    <meta property="article:published_time" content="2025-04-14T10:03:16Z" />
+    <meta property="article:author" content="Ygor dos Santos Silva" />
+    <meta property="article:section" content="Banco de Dados" />
+
+    <meta name="twitter:title" content="Utilizando a fun&#xE7;&#xE3;o OVER() no SQL Server" />
+    <meta name="twitter:description" content="Aprenda como calcular totais e m&#xE9;dias no SQL Server sem usar GROUP BY neste artigo." />
+
+    <meta name="twitter:site" content="JJConsulting" />
+
+    <link rel="stylesheet" href="../../../_content/JJConsulting.Tech.Blog/css/article.css" />
+    <link rel="stylesheet" href="../../../_content/JJConsulting.Tech.Blog/css/highlight.min.css" />
+
+    
+    <link rel="icon" href="../../../images/logo-jj-cropped.png" sizes="192x192" />
+    <link rel="preload" href="../../../images/jj-bg.webp" as="image" />
+    <link rel="preload" href="../../../images/logo-horizontal-jj.webp" as="image" />
+        
+    <link rel="stylesheet" href="../../../css/bootstrap.min.css" />
+    <link rel="stylesheet" href="../../../css/bootstrap-icons/font/bootstrap-icons.min.css" />
+    <link rel="stylesheet" href="../../../css/bootstrap-select.min.css" />
+    <link rel="stylesheet" href="../../../css/aos.min.css" />
+    <link rel="stylesheet" href="../../../css/style30f4.css?v=3" />
+    <link rel="stylesheet" href="../../../css/animate.min.css" media="print" onload="this.onload=null;this.removeAttribute('media');" />    
+
+        <!-- Google tag (gtag.js) -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-60L9XB7X4J"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-60L9XB7X4J');
+        </script>
+</head>
+
+<body>
+
+
+
+<div id="top-navbar" class="container-fluid d-none d-lg-block">
+    <div class="row">
+        <div class="col">
+            <a class="tn-link text-sm-start ms-3" href="http://fb.com/jjconsulting.com.br" target="_blank">
+                <span class="bi bi-facebook"></span><span class="ic-info ic-info-fb"> fb.com/jjconsulting.com.br</span>
+            </a>
+            <a class="tn-link text-sm-start ms-3" href="http://instagram.com/jjconsulting.com.br" target="_blank">
+                <span class="bi bi-instagram"></span><span class="ic-info ic-info-insta"> instagram.com/jjconsulting.com.br</span>
+            </a>
+            <a class="tn-link text-sm-start ms-3" href="https://www.linkedin.com/company/jjconsultingbr" target="_blank">
+                <span class="bi bi-linkedin"></span><span class="ic-info ic-info-link"> linkedin.com/company/jjconsultingbr</span>
+            </a>
+            <a class="tn-link text-sm-start ms-3" href="https://api.whatsapp.com/send?phone=551138575322&amp;text=Ol%C3%A1%2C%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es%20sobre%20os%20servi%C3%A7os%20da%20JJ%20Consulting." target="_blank">
+                <span class="bi bi-whatsapp"></span><span class="ic-info ic-info-chat"> Fale Conosco via WhatsApp</span>
+            </a>
+            <a class="tn-link text-sm-start ms-3" href="mailto:info@jjconsulting.com.br">
+                <span class="bi bi-envelope"></span><span class="ic-info"> info@jjconsulting.com.br</span>
+            </a>
+            <a class="tn-link text-sm-start ms-3" href="tel:+551138575322">
+                <span class="bi bi-telephone"></span><span class="ic-info ic-info-tel"> +55 (11) 3857-5322 </span>
+            </a>
+        </div>
+        <div class="col text-end">
+            
+
+<div class="selectLanguageWrap" title="Request culture provider: CustomRequestCultureProvider">
+    <form class="selectLanguage form-horizontal" method="post" action="https://www.jjconsulting.com.br/pt-br/home/setlanguage?returnUrl=~%2Fpt-br%2Fblog%2Fbanco-de-dados%2Foverpartitionsql">
+        <label for="currentCulture">Language:</label> 
+
+        <select name="culture" onchange="this.form.submit();" class="valid selectpicker" data-val="true" data-val-required="The Name field is required." aria-label="Select Language" id="currentCulture">
+            <option value="pt-br" data-content="<img class='img-flag' src='../../../images/flags/pt-br.png' alt=''><span>Português (Brasil)</span>" selected="selected">Português (Brasil)</option>
+            <option value="en-us" data-content="<img class='img-flag' src='../../../images/flags/en-us.png' alt=''><span>English (United States)</span>">English (United States)</option>
+            <option value="es-mx" data-content="<img class='img-flag' src='../../../images/flags/es-mx.png' alt=''><span>Español (México)</span>">Español (México)</option>
+        </select>
+       
+    </form>
+</div>
+            <a class="btn btn-sm btn-dark" href="../../../infinity/Account/Login89ef.html" target="_blank">
+                Acesso Colaboradores
+            </a>
+        </div>
+    </div>
+</div>
+
+<nav id="main-navbar" class="navbar navbar-expand-lg navbar-custom navbar-light bg-light ">
+    <div class="container">
+        <a class="navbar-brand" href="../../../pt-br.html">
+            <img src="../../../images/logo-horizontal-jj.webp" alt="JJ Consulting" class="img-fluid" loading="lazy" width="270" height="50">
+        </a>
+
+        <button id="btnMenuMobile" class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-list"></i>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav ms-auto text-center">
+                <li class="nav-item">
+                    <a class="nav-link " href="../../../pt-br.html">In&#xED;cio</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " href="../../products.html">Produtos</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " href="../../../pt-br4f77.html?section=solucoes">Solu&#xE7;&#xF5;es</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " href="../../../pt-br03d6.html?section=clientes">Clientes</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " href="../../contact.html">Contato</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " href="../../jobs.html">Fa&#xE7;a Parte</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="../../blog.html">Blog</a>
+                </li>
+            </ul>
+
+            <div class="d-lg-none text-center mt-3">
+                <p class="mb-2">Selecione o Idioma</p>
+                
+
+<div class="selectLanguageWrap" title="Request culture provider: CustomRequestCultureProvider">
+    <form class="selectLanguage form-horizontal" method="post" action="https://www.jjconsulting.com.br/pt-br/home/setlanguage?returnUrl=~%2Fpt-br%2Fblog%2Fbanco-de-dados%2Foverpartitionsql">
+        <label for="currentCulture">Language:</label> 
+
+        <select name="culture" onchange="this.form.submit();" class="valid selectpicker" data-val="true" data-val-required="The Name field is required." aria-label="Select Language" id="currentCulture">
+            <option value="pt-br" data-content="<img class='img-flag' src='../../../images/flags/pt-br.png' alt=''><span>Português (Brasil)</span>" selected="selected">Português (Brasil)</option>
+            <option value="en-us" data-content="<img class='img-flag' src='../../../images/flags/en-us.png' alt=''><span>English (United States)</span>">English (United States)</option>
+            <option value="es-mx" data-content="<img class='img-flag' src='../../../images/flags/es-mx.png' alt=''><span>Español (México)</span>">Español (México)</option>
+        </select>
+       
+    </form>
+</div>
+            </div>
+        </div>
+    </div>
+</nav>
+
+
+
+
+
+
+
+<section class="container py-5">
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb bg-transparent p-0">
+            <li class="breadcrumb-item">
+                <a href="../../blog.html" class="text-decoration-none">Blog</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="../category/banco-de-dados.html"
+                   class="text-decoration-none">Banco de Dados</a>
+            </li>
+            <li class="breadcrumb-item active text-muted" aria-current="page">Utilizando a fun&#xE7;&#xE3;o OVER() no SQL Server</li>
+        </ol>
+    </nav>
+    <article class="mb-5" data-bs-spy="scroll" data-bs-target="#toc-list" tabindex="0">
+        <header class="mb-4">
+            <h1 class="display-5 fw-bold">Utilizando a fun&#xE7;&#xE3;o OVER() no SQL Server</h1>
+            <p class="text-muted small">
+                Publicado em
+                <time
+                    datetime="2025-04-14">14 de abril de 2025</time>
+                por <a href="../author/ygor.html"><span class="fw-semibold">Ygor dos Santos Silva</span></a>
+            </p>
+        </header>
+
+
+
+        <div class="d-flex gap-3 my-4">
+            <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwww.jjconsulting.com.br%2Fpt-br%2Fblog%2Fbanco-de-dados%2Foverpartitionsql"
+               target="_blank" rel="noopener noreferrer" title="Compartilhar no Facebook" aria-label="Compartilhar no Facebook">
+                <i class="bi bi-facebook text-primary fs-3"></i>
+            </a>
+            <a href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.jjconsulting.com.br%2Fpt-br%2Fblog%2Fbanco-de-dados%2Foverpartitionsql&amp;text=Utilizando%20a%20fun%C3%A7%C3%A3o%20OVER%28%29%20no%20SQL%20Server"
+               target="_blank" rel="noopener noreferrer" title="Compartilhar no Twitter" aria-label="Compartilhar no Twitter">
+                <i class="bi bi-twitter fs-3"></i>
+            </a>
+            <a href="mailto:?subject=Utilizando%20a%20fun%C3%A7%C3%A3o%20OVER%28%29%20no%20SQL%20Server&body=https%3A%2F%2Fwww.jjconsulting.com.br%2Fpt-br%2Fblog%2Fbanco-de-dados%2Foverpartitionsql"
+               title="Enviar por Email" aria-label="Enviar por Email">
+                <i class="bi bi-envelope text-secondary fs-3"></i>
+            </a>
+            <a href="https://api.whatsapp.com/send?text=Utilizando%20a%20fun%C3%A7%C3%A3o%20OVER%28%29%20no%20SQL%20Server%20https%3A%2F%2Fwww.jjconsulting.com.br%2Fpt-br%2Fblog%2Fbanco-de-dados%2Foverpartitionsql"
+               target="_blank" rel="noopener noreferrer" title="Compartilhar no WhatsApp" aria-label="Compartilhar no WhatsApp">
+                <i class="bi bi-whatsapp text-success fs-3"></i>
+            </a>
+            <a href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fwww.jjconsulting.com.br%2Fpt-br%2Fblog%2Fbanco-de-dados%2Foverpartitionsql"
+               target="_blank" rel="noopener noreferrer" title="Compartilhar no LinkedIn" aria-label="Compartilhar no LinkedIn">
+                <i class="bi bi-linkedin" style="color: #0077b5; font-size: 1.75rem;"></i>
+            </a>
+        </div>
+
+
+        <div class="row">
+            <main class="col-md-9" id="mainContent">
+                <section class="article-content fs-5 lh-lg">
+                    <p>Neste tutorial, vamos explorar como agrupar dados por uma coluna, como no nosso exemplo <code>Id</code>, sem precisar fazer um <code>GROUP BY</code>. Para isso, vamos usar o conceito de <b>Funções de Janela</b>.</p>
+
+<h2>O Que São Funções de Janela no SQL Server?</h2>
+
+<p>As funções de janela no SQL Server são utilizadas para aplicar cálculos de agregação sem a necessidade de agrupar as linhas com o comando <code>GROUP BY</code>. Isso permite que você realize operações como somar, contar ou calcular a média dos dados, mantendo todas as linhas visíveis. Isso é muito útil quando você precisa de análises detalhadas e agregadas ao mesmo tempo, sem perder a individualidade dos dados.</p>
+
+
+<p>Vamos usar um exemplo prático para ilustrar como as funções de janela podem ser usadas para calcular totais, médias, contagens e outras métricas dentro de cada grupo de dados, no caso, cada time identificado pelo <code>Id</code>. Em vez de usar <code>GROUP BY</code>, vamos aplicar as funções de janela para calcular esses agregados sem perder as informações individuais de cada jogador do nosso Corinthians.</p>
+
+<h3>Código SQL para Calcular Totais, Médias e Outras Métricas</h3>
+
+<pre><code>
+DECLARE @TB_TESTE TABLE (Id int, Nome varchar(max), Valor decimal(18,2))
+
+INSERT INTO @TB_TESTE
+VALUES	
+    (1, 'Craque Neto', 5000), 
+    (1, 'Marcelinho Carioca', 1000.2),
+    (2, 'Socrates', 3321),
+    (3, 'Cassio', 3321),
+    (3, 'Yuri Alberto', 3321)
+
+SELECT  
+    *,   
+    SUM(Valor) OVER (PARTITION BY Id) AS Total,
+    AVG(Valor) OVER (PARTITION BY Id) AS [Avg],
+    COUNT(Valor) OVER (PARTITION BY Id) AS [Count],
+    MIN(Valor) OVER (PARTITION BY Id) AS [Min],
+    MAX(Valor) OVER (PARTITION BY Id) AS [Max]
+FROM @TB_TESTE
+</code></pre>
+
+<h2>Como Funciona a Cláusula <code>OVER()</code>?</h3>
+
+<p>Ao usar a função de janela <code>OVER()</code>, você pode especificar que deseja calcular agregados, como a soma, a média ou a contagem, sem agrupar os dados. Isso é feito usando a cláusula <code>PARTITION BY</code>, que permite dividir os dados em grupos. No exemplo acima, estamos calculando os totais, médias e outras métricas por time (<code>Id</code>), mantendo as linhas de cada jogador intactas.</p>
+<p>O uso da cláusula <code>OVER()</code> nos permite calcular as agregações para cada grupo (ou <code>Id</code>, no nosso exemplo) sem a necessidade de agrupar os dados. O resultado será uma tabela como esta:</p>
+
+<div class="table-responsive">
+  <table class="table table-bordered table-striped">
+  <thead>
+    <tr>
+      <th>Id</th>
+      <th>Nome</th>
+      <th>Valor</th>
+      <th>Total</th>
+      <th>Avg</th>
+      <th>Count</th>
+      <th>Min</th>
+      <th>Max</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td>Craque Neto</td>
+      <td>5000.00</td>
+      <td>6000.20</td>
+      <td>3000.100000</td>
+      <td>2</td>
+      <td>1000.20</td>
+      <td>5000.00</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>Marcelinho Carioca</td>
+      <td>1000.20</td>
+      <td>6000.20</td>
+      <td>3000.100000</td>
+      <td>2</td>
+      <td>1000.20</td>
+      <td>5000.00</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>Socrates</td>
+      <td>3321.00</td>
+      <td>3321.00</td>
+      <td>3321.000000</td>
+      <td>1</td>
+      <td>3321.00</td>
+      <td>3321.00</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>Cassio</td>
+      <td>3321.00</td>
+      <td>6642.00</td>
+      <td>3321.000000</td>
+      <td>2</td>
+      <td>3321.00</td>
+      <td>3321.00</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>Yuri Alberto</td>
+      <td>3321.00</td>
+      <td>6642.00</td>
+      <td>3321.000000</td>
+      <td>2</td>
+      <td>3321.00</td>
+      <td>3321.00</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<h2>Saiba mais</h2>
+
+<p>Se você quiser explorar mais variações do uso da cláusula <code>OVER()</code> para outras funções de agregação e calcular métricas em diferentes tipos de dados, acesse a <a href="https://learn.microsoft.com/pt-br/sql/t-sql/queries/select-over-clause-transact-sql" target="_blank">documentação oficial do SQL Server.</a></p>
+
+
+                </section>
+            </main>
+            <nav class="col-md-3 d-none d-md-block" role="navigation">
+                <div class="toc-wrapper">
+                    <div id="toc-list" class="list-group list-group-flush"></div>
+                </div>
+            </nav>
+        </div>
+    </article>
+
+    <aside class="border-top pt-5 mt-5">
+        <h3 class="h5 fw-bold text-uppercase mb-3">Sobre o autor</h3>
+        <div class="d-flex align-items-center">
+            <div class="me-3 flex-shrink-0">
+                <img src="../../../public/blog/author/39/Screenshot_1.png"
+                     alt="Ygor dos Santos Silva"
+                     class="rounded-circle"
+                     width="64"
+                     height="64"
+                     loading="lazy"
+                     style="object-fit: cover;"/>
+            </div>
+            <div>
+                <h3 class="h6 fw-bold mb-1">
+                    <a href="../author/ygor.html">Ygor dos Santos Silva</a>
+                </h3>
+                <p class="mb-0 text-muted small">Desenvolvedor na JJ Consulting, Ygor atua com tecnologias do ecossistema .NET, contribuindo para solu&#xE7;&#xF5;es robustas e de alta qualidade. Fora do ambiente profissional, &#xE9; corinthiano roxo, apaixonado pelo time e por tudo que envolve o universo alvinegro.</p>
+            </div>
+        </div>
+    </aside>
+    <div class="mt-5">
+        <a href="../../blog.html" class="btn btn-outline-secondary">
+            &larr; Voltar ao &#xED;nicio
+        </a>
+    </div>
+</section>
+
+
+
+
+    <footer class="footer bg-dark">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-5 col-md-12 mb-4 pb-2">
+                    <a class="footer-logo" href="#">
+                    <img src="../../../images/logo_jj-consulting-hv-adj.png" alt="JJ Consulting" loading="lazy" />
+                    </a>
+                    <ul class="list-unstyled social-icon social mx-auto mt-4">
+                        <li class="list-inline-item">
+                            <a href="http://fb.com/jjconsulting.com.br" target="_blank">
+                                <i class="bi bi-facebook" title="Facebook"></i>
+                            </a>
+                        </li>
+                        <li class="list-inline-item">
+                            <a href="https://www.linkedin.com/company/jjconsultingbr" target="_blank">
+                                <i class="bi bi-linkedin" title="Linkedin"></i>
+                            </a>
+                        </li>
+                        <li class="list-inline-item">
+                            <a href="https://instagram.com/jjconsulting.com.br/" target="_blank">
+                                <i class="bi bi-instagram" title="Instagram"></i>
+                            </a>
+                        </li>
+                        <li class="list-inline-item">
+                            <a href="https://api.whatsapp.com/send?phone=551138575322&amp;text=Ol%C3%A1%2C%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es%20sobre%20os%20servi%C3%A7os%20da%20JJ%20Consulting." target="_blank">
+                                <i class="bi bi-whatsapp" title="Fale Conosco via WhatsApp"></i>
+                            </a>
+                        </li>
+                        <li class="list-inline-item">
+                            <a href="mailto:info@jjconsulting.com.br">
+                                <i class="bi bi-envelope" title="E-mail"></i>
+                            </a>
+                        </li>
+                        <li class="list-inline-item">
+                            <a href="tel:+551138575322">
+                                <i class="bi bi-telephone" title="Telefone"></i>
+                            </a>
+                        </li>
+                    </ul><!--end icon-->
+                </div><!--end col-->
+
+                <div class="col-lg-3 col-md-3 mb-4 pb-2">
+                    <h7 class="text-light text-uppercase footer-head">Mapa do Site</h7>
+                    <ul class="list-unstyled footer-list mt-4">
+                        <li class="mt-2"><a href="../../../pt-br.html" class="text-foot"><i class="bi bi-chevron-right me-2"></i> In&#xED;cio</a></li>
+                        <li class="mt-2"><a href="../../products.html" class="text-foot"><i class="bi bi-chevron-right me-2"></i> Produtos</a></li>
+                        <li class="mt-2"><a href="../../../pt-br.html#solucoes" class="text-foot"><i class="bi bi-chevron-right me-2"></i> Solu&#xE7;&#xF5;es</a></li>
+                        <li class="mt-2"><a href="../../../pt-br.html#clientes" class="text-foot"><i class="bi bi-chevron-right me-2"></i> Clientes</a></li>
+                        <li class="mt-2"><a href="../../contact.html" class="text-foot"><i class="bi bi-chevron-right me-2"></i> Contato</a></li>
+                        <li class="mt-2"><a class="text-foot" href="../../jobs.html" target="_blank"><i class="bi bi-chevron-right me-2"></i> Fa&#xE7;a Parte</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-lg-4 col-md-8 mb-4 pb-2">
+                    <h7 class="text-light text-uppercase footer-head">Onde nos encontrar</h7>
+                    <div class="list-unstyled text-foot mt-4 mb-0">
+                        <div class="footer-end">
+                            <a href="#" target="_blank">
+                                <i class="bi bi-geo-alt"></i> R. Aníbal Benevolo, 94 - São Paulo
+                            </a>
+                            <br>
+                            <a href="mailto:info@jjconsulting.com.br">
+                                <i class="bi bi-envelope"></i> info@jjconsulting.com.br
+                            </a>
+                            <br>
+                            <a href="tel:+551138575322" target="_blank">
+                                <i class="bi bi-telephone"></i> (11) 3857-5322
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div><!--end row-->
+        </div><!--end container-->
+        <hr>
+        <div class="footer-bar">
+            <div class="container text-foot text-center">
+                <div class="row align-items-center">
+                    <div class="col-sm-12">
+                        <div class="text-sm-center">
+                            <p class="mb-0">© 2006 ~ 2025 JJ Consulting<br />Todos os direitos reservados.</p>
+                        </div>
+                    </div><!--end col-->
+                </div><!--end row-->
+            </div><!--end container-->
+        </div><!--end container-->
+        <!-- Chat WhatsApp -->
+        <div id="btnFlutuante" class="floating-btn animate__animated animate__bounce animate__fast animate__delay-2s animate__repeat-3">
+            <div class="icon">
+                <i class="bi bi-whatsapp"></i>
+            </div>
+            <span>(11) 3857-5322</span>
+        </div>
+    </footer>
+
+
+
+<script src="../../../js/aos.min.js"></script>
+<script src="../../../js/jquery/dist/jquery.min.js"></script>
+<script src="../../../js/bootstrap.bundle.min.js"></script>
+<script src="../../../js/bootstrap-select.min.js"></script>
+
+<script src="../../../js/morphext.min.js"></script> 
+
+<script src="../../../js/appc395.js?v=X8IOXcn2aHmfuC4d4xkTpggtRFrZ-U8zSfB7-Tbidno"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        AOS.init({
+            duration: 1000,
+            once: false,
+            offset: 200,
+        });
+    });
+</script>
+
+
+    <script src="../../../_content/JJConsulting.Tech.Blog/js/highlight.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const tocList = document.getElementById('toc-list')
+            const tocWrapper = document.querySelector('.toc-wrapper')
+            const mainContent = document.getElementById('mainContent')
+            const navCol = tocWrapper.closest('nav')
+            const h2s = document.querySelectorAll('.article-content h2')
+
+            if (h2s.length <= 1) {
+                tocWrapper.style.display = 'none'
+                if (navCol) {
+                    navCol.classList.add('d-none')
+                    mainContent.classList.remove('col-md-9')
+                    mainContent.classList.add('col-sm-12')
+                }
+                return
+            }
+
+            h2s.forEach((h2, index) => {
+                const id = h2.id || `section-${index}`
+                h2.id = id
+                const link = document.createElement('a')
+                link.href = `#${id}`
+                link.className = 'list-group-item list-group-item-action'
+                link.textContent = h2.textContent
+                tocList.appendChild(link)
+            })
+
+            hljs.highlightAll();
+            
+            new bootstrap.ScrollSpy(document.body, {
+                target: '#toc-list'
+            });
+        })
+
+    </script>
+
+</body>
+
+<!-- Mirrored from www.jjconsulting.com.br/pt-br/blog/banco-de-dados/overpartitionsql by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 10 Jul 2025 14:47:43 GMT -->
+</html>

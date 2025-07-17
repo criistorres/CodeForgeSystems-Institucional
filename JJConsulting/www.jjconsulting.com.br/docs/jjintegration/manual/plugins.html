@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html>
+  
+<!-- Mirrored from www.jjconsulting.com.br/docs/jjintegration/manual/plugins.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 10 Jul 2025 14:49:33 GMT -->
+<head>
+    <meta charset="utf-8">
+      <title> | JJIntegration </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content=" | JJIntegration ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      
+      
+      
+      <meta name="docfx:docurl" content="https://gitlab.jjconsulting.com.br/jjconsulting/jjintegration/blob/master/docs/manual/plugins.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index-2.html">
+            <img id="logo" class="svg" src="../logo.png" alt="JJIntegration - Manual">
+            JJIntegration - Manual
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+
+<h2 id="desenvolvendo-plugins">Desenvolvendo Plugins</h2>
+<p>O servidor do JJIntegration suporta tarefas customizadas com suporte a diversas ações.</p>
+<ol>
+<li>Adicione um arquivo NuGet.config com o seguinte conteúdo na raiz de sua solution.</li>
+</ol>
+<pre><code class="lang-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;configuration&gt;
+&lt;packageSources&gt;
+   &lt;add key=&quot;GitLabJJ&quot; value=&quot;https://gitlab.jjconsulting.com.br/api/v4/groups/30/-/packages/nuget/index.json&quot; /&gt;
+   &lt;add key=&quot;nuget.org&quot; value=&quot;https://api.nuget.org/v3/index.json&quot; protocolVersion=&quot;3&quot; /&gt;
+&lt;/packageSources&gt;
+&lt;packageSourceCredentials&gt;
+    &lt;GitLabJJ&gt;
+       &lt;add key=&quot;Username&quot; value=&quot;jjconsulting&quot; /&gt;
+       &lt;add key=&quot;ClearTextPassword&quot; value=&quot;gldt-HgKek3e_hXgnbhnFygag&quot; /&gt;
+   &lt;/GitLabJJ&gt;
+&lt;/packageSourceCredentials&gt;
+&lt;/configuration&gt;
+</code></pre>
+<ol start="2">
+<li>Crie um projeto class library .NET 8, o seu .csproj deve ser semelhante ao abaixo. <strong>Se atente as tags <code>EnableDynamicLoading</code> e na referência dos PluginContracts as tags <code>Private</code> e <code>ExcludeAssets</code></strong></li>
+</ol>
+<pre><code class="lang-cs">&lt;Project Sdk=&quot;Microsoft.NET.Sdk&quot;&gt;
+  &lt;PropertyGroup&gt;
+    &lt;TargetFramework&gt;net8.0&lt;/TargetFramework&gt;
+    &lt;ImplicitUsings&gt;enable&lt;/ImplicitUsings&gt;
+    &lt;Nullable&gt;enable&lt;/Nullable&gt;
+	&lt;PlatformTarget&gt;AnyCPU&lt;/PlatformTarget&gt;
+	&lt;EnableDynamicLoading&gt;true&lt;/EnableDynamicLoading&gt;
+  &lt;/PropertyGroup&gt;
+
+  &lt;ItemGroup&gt;
+    &lt;PackageReference Include=&quot;JJIntegration.PluginContracts&quot; Version=&quot;1.0.0&quot; &gt;
+        &lt;Private&gt;false&lt;/Private&gt;
+        &lt;ExcludeAssets&gt;runtime&lt;/ExcludeAssets&gt;
+    &lt;/PackageReference&gt;
+
+    &lt;!-- Adicione aqui mais referências --&gt;
+  &lt;/ItemGroup&gt;
+&lt;/Project&gt;
+</code></pre>
+<ol start="3">
+<li>Na sua class library, crie uma classe que implemente a interface <code>IScheduleTask</code>, no exemplo abaixo, essa é a tarefa com as ações do projeto do Farol de Pedidos.</li>
+</ol>
+<pre><code class="lang-cs">using BOPE.Services;
+using JJIntegration.PluginContracts;
+using System.Security.Cryptography;
+using System.Text;
+using Microsoft.Extensions.DependencyInjection;
+
+namespace BOPE.JJIntegration;
+
+public class BopeScheduleTask : IScheduleTask
+{
+    private const string SalesOrder = &quot;0&quot;;
+    private const string Delivery = &quot;1&quot;;
+    private const string Invoice = &quot;2&quot;;
+    public string TaskName =&gt; &quot;Farol de Pedidos&quot;;
+
+    public IEnumerable&lt;ScheduleAction&gt; Actions
+    {
+        get
+        {
+            yield return new(SalesOrder, &quot;SalesOrder&quot;);
+            yield return new(Delivery, &quot;Delivery&quot;);
+            yield return new(Invoice, &quot;Invoice&quot;);
+        }
+    }
+
+    public Guid TaskId =&gt; Guid.Parse(&quot;GERE_SEU_GUID_AQUI_E_COLE_AQUI&quot;);
+
+    private IServiceProvider ServiceProvider { get; }
+    
+    public BopeScheduleTask()
+    {
+        var services = new ServiceCollection();
+
+        services.AddBopeServices();
+
+        ServiceProvider = services.BuildServiceProvider();
+    }
+
+    public async Task&lt;ScheduleResult&gt; ExecuteAction(string actionId, IScheduleLogger logger, CancellationToken cancellationToken)
+    {
+        var scheduleReturn = new ScheduleResult();
+
+        string taskName = Actions.GetName(actionId);
+        try
+        {
+            var loggerWrapper = new JJIntegrationLoggerWrapper(logger);
+            
+            ServiceBase? service = null;
+
+            service = actionId switch
+            {
+                Delivery =&gt; ServiceProvider.GetRequiredService&lt;DeliveryService&gt;(),
+                Invoice =&gt; ServiceProvider.GetRequiredService&lt;InvoiceService&gt;(),
+                SalesOrder =&gt; ServiceProvider.GetRequiredService&lt;SalesOrderService&gt;(),
+                _ =&gt; service
+            };
+            
+            await service!.Process(loggerWrapper, cancellationToken);
+
+            scheduleReturn.Message += $&quot;{taskName}\r\n{service.GetDetailMessage()}\r\n&quot;;
+
+            if (!scheduleReturn.HasError)
+                scheduleReturn.HasError = service.NumberOfErrors &gt; 0;
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex.ToString());
+            scheduleReturn.Message = ex.ToString();
+            scheduleReturn.HasError = true;
+        }
+
+        return scheduleReturn;
+    }
+
+}
+
+</code></pre>
+<div class="TIP">
+<h5>Tip</h5>
+<p>Para utilizar injeção de dependência, note que criamos uma <code>ServiceCollection</code> somente para esse plugin. Essa classe vai ser registrada como <code>Singleton</code> no servidor.
+Recupere serviços do tipo <code>Transient</code> no método <code>ExecuteAction</code> e crie instâncias <code>Singleton</code> no construtor.</p>
+</div>
+<ol start="4">
+<li>Publique o plugin em modo <code>Release</code> e adicione ele a pasta Plugins de seu servidor. Você pode colocar vários plugins em vários subdiretórios.</li>
+</ol>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://gitlab.jjconsulting.com.br/jjconsulting/jjintegration/blob/master/docs/manual/plugins.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <div><span>JJIntegration - Cross Server Version</span></div>
+        </div>
+      </div>
+    </footer>
+  </body>
+
+<!-- Mirrored from www.jjconsulting.com.br/docs/jjintegration/manual/plugins.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 10 Jul 2025 14:49:33 GMT -->
+</html>

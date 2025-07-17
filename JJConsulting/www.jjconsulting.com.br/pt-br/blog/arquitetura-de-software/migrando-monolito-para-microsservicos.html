@@ -1,0 +1,506 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+
+<!-- Mirrored from www.jjconsulting.com.br/pt-br/blog/arquitetura-de-software/migrando-monolito-para-microsservicos by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 10 Jul 2025 14:47:36 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+    <meta charset="utf-8"/>
+    <title>Migrando monolito em .NET para microsservi&#xE7;os</title>
+
+    <meta name="language" content="pt-BR" />
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    
+    <meta name="description" content="Descubra os desafios, aprendizados e boas pr&#xE1;ticas na jornada de transformar um sistema monol&#xED;tico em uma arquitetura de microservi&#xE7;os escal&#xE1;vel. Um relato direto, pr&#xE1;tico e sem rodeios para quem est&#xE1; pensando em seguir esse caminho." />
+    <meta name="author" content="Lucio Pelinson" />
+    <meta name="robots" content="index, follow" />
+    <meta name="keywords" content="monolito, micro-servi&#xE7;os, .net" />
+
+
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="Migrando monolito em .NET para microsservi&#xE7;os" />
+    <meta property="og:description" content="Descubra os desafios, aprendizados e boas pr&#xE1;ticas na jornada de transformar um sistema monol&#xED;tico em uma arquitetura de microservi&#xE7;os escal&#xE1;vel. Um relato direto, pr&#xE1;tico e sem rodeios para quem est&#xE1; pensando em seguir esse caminho." />
+        <meta property="og:image" content="../../../public/blog/article/6/microservices_vs_monolith.webp" />
+
+    <meta property="og:url" content="migrando-monolito-para-microsservicos.html" />
+    <meta property="og:site_name" content="JJConsulting" />
+    <meta property="article:published_time" content="2025-04-12T12:33:08Z" />
+    <meta property="article:author" content="Lucio Pelinson" />
+    <meta property="article:section" content="Arquitetura de Software" />
+
+    <meta name="twitter:title" content="Migrando monolito em .NET para microsservi&#xE7;os" />
+    <meta name="twitter:description" content="Descubra os desafios, aprendizados e boas pr&#xE1;ticas na jornada de transformar um sistema monol&#xED;tico em uma arquitetura de microservi&#xE7;os escal&#xE1;vel. Um relato direto, pr&#xE1;tico e sem rodeios para quem est&#xE1; pensando em seguir esse caminho." />
+        <meta name="twitter:image" content="../../../public/blog/article/6/microservices_vs_monolith.webp" />
+
+    <meta name="twitter:site" content="JJConsulting" />
+
+    <link rel="stylesheet" href="../../../_content/JJConsulting.Tech.Blog/css/article.css" />
+    <link rel="stylesheet" href="../../../_content/JJConsulting.Tech.Blog/css/highlight.min.css" />
+
+    
+    <link rel="icon" href="../../../images/logo-jj-cropped.png" sizes="192x192" />
+    <link rel="preload" href="../../../images/jj-bg.webp" as="image" />
+    <link rel="preload" href="../../../images/logo-horizontal-jj.webp" as="image" />
+        
+    <link rel="stylesheet" href="../../../css/bootstrap.min.css" />
+    <link rel="stylesheet" href="../../../css/bootstrap-icons/font/bootstrap-icons.min.css" />
+    <link rel="stylesheet" href="../../../css/bootstrap-select.min.css" />
+    <link rel="stylesheet" href="../../../css/aos.min.css" />
+    <link rel="stylesheet" href="../../../css/style30f4.css?v=3" />
+    <link rel="stylesheet" href="../../../css/animate.min.css" media="print" onload="this.onload=null;this.removeAttribute('media');" />    
+
+        <!-- Google tag (gtag.js) -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-60L9XB7X4J"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-60L9XB7X4J');
+        </script>
+</head>
+
+<body>
+
+
+
+<div id="top-navbar" class="container-fluid d-none d-lg-block">
+    <div class="row">
+        <div class="col">
+            <a class="tn-link text-sm-start ms-3" href="http://fb.com/jjconsulting.com.br" target="_blank">
+                <span class="bi bi-facebook"></span><span class="ic-info ic-info-fb"> fb.com/jjconsulting.com.br</span>
+            </a>
+            <a class="tn-link text-sm-start ms-3" href="http://instagram.com/jjconsulting.com.br" target="_blank">
+                <span class="bi bi-instagram"></span><span class="ic-info ic-info-insta"> instagram.com/jjconsulting.com.br</span>
+            </a>
+            <a class="tn-link text-sm-start ms-3" href="https://www.linkedin.com/company/jjconsultingbr" target="_blank">
+                <span class="bi bi-linkedin"></span><span class="ic-info ic-info-link"> linkedin.com/company/jjconsultingbr</span>
+            </a>
+            <a class="tn-link text-sm-start ms-3" href="https://api.whatsapp.com/send?phone=551138575322&amp;text=Ol%C3%A1%2C%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es%20sobre%20os%20servi%C3%A7os%20da%20JJ%20Consulting." target="_blank">
+                <span class="bi bi-whatsapp"></span><span class="ic-info ic-info-chat"> Fale Conosco via WhatsApp</span>
+            </a>
+            <a class="tn-link text-sm-start ms-3" href="mailto:info@jjconsulting.com.br">
+                <span class="bi bi-envelope"></span><span class="ic-info"> info@jjconsulting.com.br</span>
+            </a>
+            <a class="tn-link text-sm-start ms-3" href="tel:+551138575322">
+                <span class="bi bi-telephone"></span><span class="ic-info ic-info-tel"> +55 (11) 3857-5322 </span>
+            </a>
+        </div>
+        <div class="col text-end">
+            
+
+<div class="selectLanguageWrap" title="Request culture provider: CustomRequestCultureProvider">
+    <form class="selectLanguage form-horizontal" method="post" action="https://www.jjconsulting.com.br/pt-br/home/setlanguage?returnUrl=~%2Fpt-br%2Fblog%2Farquitetura-de-software%2Fmigrando-monolito-para-microsservicos">
+        <label for="currentCulture">Language:</label> 
+
+        <select name="culture" onchange="this.form.submit();" class="valid selectpicker" data-val="true" data-val-required="The Name field is required." aria-label="Select Language" id="currentCulture">
+            <option value="pt-br" data-content="<img class='img-flag' src='../../../images/flags/pt-br.png' alt=''><span>Português (Brasil)</span>" selected="selected">Português (Brasil)</option>
+            <option value="en-us" data-content="<img class='img-flag' src='../../../images/flags/en-us.png' alt=''><span>English (United States)</span>">English (United States)</option>
+            <option value="es-mx" data-content="<img class='img-flag' src='../../../images/flags/es-mx.png' alt=''><span>Español (México)</span>">Español (México)</option>
+        </select>
+       
+    </form>
+</div>
+            <a class="btn btn-sm btn-dark" href="../../../infinity/Account/Login89ef.html" target="_blank">
+                Acesso Colaboradores
+            </a>
+        </div>
+    </div>
+</div>
+
+<nav id="main-navbar" class="navbar navbar-expand-lg navbar-custom navbar-light bg-light ">
+    <div class="container">
+        <a class="navbar-brand" href="../../../pt-br.html">
+            <img src="../../../images/logo-horizontal-jj.webp" alt="JJ Consulting" class="img-fluid" loading="lazy" width="270" height="50">
+        </a>
+
+        <button id="btnMenuMobile" class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-list"></i>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav ms-auto text-center">
+                <li class="nav-item">
+                    <a class="nav-link " href="../../../pt-br.html">In&#xED;cio</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " href="../../products.html">Produtos</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " href="../../../pt-br4f77.html?section=solucoes">Solu&#xE7;&#xF5;es</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " href="../../../pt-br03d6.html?section=clientes">Clientes</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " href="../../contact.html">Contato</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " href="../../jobs.html">Fa&#xE7;a Parte</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="../../blog.html">Blog</a>
+                </li>
+            </ul>
+
+            <div class="d-lg-none text-center mt-3">
+                <p class="mb-2">Selecione o Idioma</p>
+                
+
+<div class="selectLanguageWrap" title="Request culture provider: CustomRequestCultureProvider">
+    <form class="selectLanguage form-horizontal" method="post" action="https://www.jjconsulting.com.br/pt-br/home/setlanguage?returnUrl=~%2Fpt-br%2Fblog%2Farquitetura-de-software%2Fmigrando-monolito-para-microsservicos">
+        <label for="currentCulture">Language:</label> 
+
+        <select name="culture" onchange="this.form.submit();" class="valid selectpicker" data-val="true" data-val-required="The Name field is required." aria-label="Select Language" id="currentCulture">
+            <option value="pt-br" data-content="<img class='img-flag' src='../../../images/flags/pt-br.png' alt=''><span>Português (Brasil)</span>" selected="selected">Português (Brasil)</option>
+            <option value="en-us" data-content="<img class='img-flag' src='../../../images/flags/en-us.png' alt=''><span>English (United States)</span>">English (United States)</option>
+            <option value="es-mx" data-content="<img class='img-flag' src='../../../images/flags/es-mx.png' alt=''><span>Español (México)</span>">Español (México)</option>
+        </select>
+       
+    </form>
+</div>
+            </div>
+        </div>
+    </div>
+</nav>
+
+
+
+
+
+
+
+<section class="container py-5">
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb bg-transparent p-0">
+            <li class="breadcrumb-item">
+                <a href="../../blog.html" class="text-decoration-none">Blog</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="../category/arquitetura-de-software.html"
+                   class="text-decoration-none">Arquitetura de Software</a>
+            </li>
+            <li class="breadcrumb-item active text-muted" aria-current="page">Migrando monolito em .NET para microsservi&#xE7;os</li>
+        </ol>
+    </nav>
+    <article class="mb-5" data-bs-spy="scroll" data-bs-target="#toc-list" tabindex="0">
+        <header class="mb-4">
+            <h1 class="display-5 fw-bold">Migrando monolito em .NET para microsservi&#xE7;os</h1>
+            <p class="text-muted small">
+                Publicado em
+                <time
+                    datetime="2025-04-12">12 de abril de 2025</time>
+                por <a href="../author/lucio.html"><span class="fw-semibold">Lucio Pelinson</span></a>
+            </p>
+        </header>
+
+            <div class="header-image-container rounded mb-5">
+                <img src="../../../public/blog/article/6/microservices_vs_monolith.webp" alt="Migrando monolito em .NET para microsservi&#xE7;os" class="blurred-image"
+                     loading="lazy"/>
+                <img src="../../../public/blog/article/6/microservices_vs_monolith.webp" alt="Migrando monolito em .NET para microsservi&#xE7;os" class="main-image" loading="lazy"/>
+            </div>
+
+
+        <div class="d-flex gap-3 my-4">
+            <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwww.jjconsulting.com.br%2Fpt-br%2Fblog%2Farquitetura-de-software%2Fmigrando-monolito-para-microsservicos"
+               target="_blank" rel="noopener noreferrer" title="Compartilhar no Facebook" aria-label="Compartilhar no Facebook">
+                <i class="bi bi-facebook text-primary fs-3"></i>
+            </a>
+            <a href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.jjconsulting.com.br%2Fpt-br%2Fblog%2Farquitetura-de-software%2Fmigrando-monolito-para-microsservicos&amp;text=Migrando%20monolito%20em%20.NET%20para%20microsservi%C3%A7os"
+               target="_blank" rel="noopener noreferrer" title="Compartilhar no Twitter" aria-label="Compartilhar no Twitter">
+                <i class="bi bi-twitter fs-3"></i>
+            </a>
+            <a href="mailto:?subject=Migrando%20monolito%20em%20.NET%20para%20microsservi%C3%A7os&body=https%3A%2F%2Fwww.jjconsulting.com.br%2Fpt-br%2Fblog%2Farquitetura-de-software%2Fmigrando-monolito-para-microsservicos"
+               title="Enviar por Email" aria-label="Enviar por Email">
+                <i class="bi bi-envelope text-secondary fs-3"></i>
+            </a>
+            <a href="https://api.whatsapp.com/send?text=Migrando%20monolito%20em%20.NET%20para%20microsservi%C3%A7os%20https%3A%2F%2Fwww.jjconsulting.com.br%2Fpt-br%2Fblog%2Farquitetura-de-software%2Fmigrando-monolito-para-microsservicos"
+               target="_blank" rel="noopener noreferrer" title="Compartilhar no WhatsApp" aria-label="Compartilhar no WhatsApp">
+                <i class="bi bi-whatsapp text-success fs-3"></i>
+            </a>
+            <a href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fwww.jjconsulting.com.br%2Fpt-br%2Fblog%2Farquitetura-de-software%2Fmigrando-monolito-para-microsservicos"
+               target="_blank" rel="noopener noreferrer" title="Compartilhar no LinkedIn" aria-label="Compartilhar no LinkedIn">
+                <i class="bi bi-linkedin" style="color: #0077b5; font-size: 1.75rem;"></i>
+            </a>
+        </div>
+
+
+        <div class="row">
+            <main class="col-md-9" id="mainContent">
+                <section class="article-content fs-5 lh-lg">
+                    <h2>Introdução</h2>
+Gostaria de compartilhar um pouco da minha experiência nesse tipo de atividade com vocês. Primeiramente, tenha em mente que não há nada pior que isso, e o caos é iminente. Tudo que antes parecia simples e trivial passa a não ser mais.
+<br>
+Aquele seu <code>IMemoryCache</code> precisará avisar outras aplicações, e outros conceitos, como <code>IDistributedCache</code>, terão que ser aplicados. Aquela transação talvez agora não seja mais possível, e você terá que abrir mão disso. Você vai criar ódio da infra e das falhas de rede, que antes passavam despercebidas. Vai começar a usar o Redis com mais frequência, filas sobre filas, e o ambiente começa a crescer. Sua instalação e manutenção ficarão cada vez mais complexas.
+<br>
+Então, pense bem antes de seguir esse caminho sem volta. Vou listar abaixo as vantagens e desvantagens dessa arquitetura:
+
+<h2>Vantagens e Desvantagens</h2>
+<div>
+  <b>Prós:</b>
+  <ul>
+    <li>Altamente escalável e distribuído.</li>
+    <li>Atualização (GMUD) de processos específicos sem impactar operações críticas.</li>
+    <li>Permite que várias equipes (squads) trabalhem com mais liberdade para resolver problemas.</li>
+    <li>
+      Uso de diversas tecnologias pode ser muito útil —
+      ao trocar a tecnologia, tarefas difíceis podem se tornar simples e rápidas em alguns cenários.
+      <strong>(Mas cuidado com a famosa “colcha de retalhos”!)</strong>
+    </li>
+  </ul>
+  <hr/>
+  <b>Contras:</b>
+  <ul>
+    <li>Mais tempo de desenvolvimento.</li>
+    <li>Gerenciamento do ambiente é bem mais difícil e complexo.</li>
+    <li>Seus testes (TDD) integrados agora serão mais complexos e trabalhosos.</li>
+    <li>
+      Você precisará de recursos adicionais como filas, servidores de cache, proxies etc., que antes não eram necessários.
+    </li>
+    <li>
+      Controle de versões de API e comunicação entre serviços:
+      antes, se você removia algo no monolito, o projeto nem compilava, acusando o que faltava na interface.
+      Agora, não tem mais isso — e depois de um tempo, será impossível saber se alguém ainda usa aquela versão da API…
+      até que você desligue e alguém grite. <em>("Ah, mas pode documentar e tal..." Vai por mim, é conversa.)</em>
+    </li>
+  </ul>
+  <hr/>
+</div>
+
+
+<h2>Recomendação</h2>
+Muitas vezes, quando dou consultoria em empresas, simplesmente separar o sistema atual em módulos já resolve 90% dos problemas.
+Mas quando realmente a arquitetura de microsserviços é a melhor opção?
+Na minha opinião, quando você realmente precisa escalar uma aplicação, não terá como fugir. Mas tenha em mente que estamos falando de milhares de acessos ao seu sistema o tempo todo, ou de grandes gargalos em processos específicos, com muita gente trabalhando ao mesmo tempo. Nesse cenário, afirmo com toda certeza: essa arquitetura salva a lavoura.
+<br>Escuto muito coisas do tipo:
+<br>"Ah, mas e se um dia eu precisar escalar? Já não é melhor desenvolver assim desde o início?"
+<br>Sou categórico em afirmar: não. Prefira o monolito no início.
+Existem partners e boas práticas que ajudam a estruturar seu sistema de forma que torne a separação mais simples no futuro. Algumas práticas que considero excelentes:
+
+<h2>Boas práticas para um monolito</h2>
+<b>Separe em módulos:</b><br>
+Escreva o monolito de forma modular. Sempre que possível, separe as regras de negócio. Se, por acaso, mudar de ideia no meio do caminho — para agrupar ou desagrupar módulos — isso será bem mais simples, e o refactoring vai te salvar.<br>
+<b>Banco de dados:</b><br>
+Agrupe as tabelas por módulo. Se puder deixá-las em bancos separados, melhor ainda. Se não, use schemas para separar os módulos — isso facilitará sua vida no futuro.
+<br>Sempre escuto:<br>
+"Ah, Lucio, não dá... o cliente, o produto, a hierarquia de usuários... usamos em vários módulos!"
+Sim, isso vai acontecer.
+Uma maneira simples e eficiente de resolver isso, de forma imediata, é com views. Crie, por exemplo, uma view cliente no schema do módulo, apenas com os campos que ele usa. Nunca acesse diretamente os schemas de outros módulos.
+<br>
+<b>Dependência entre módulos:</b><br>
+Sempre que possível, utilize uma interface no seu módulo para representar a dependência. Injete a classe do outro módulo que implementa essa interface. Tome muito cuidado para não sair referenciando outros módulos alucinadamente. Quando o acoplamento estiver muito forte, reavalie suas fronteiras.
+No monolito, isso fica bem visível e é fácil de resolver.
+<br>
+Com esses simples cuidados, sua vida ao escalar uma aplicação se tornará bem mais simples.
+
+
+                </section>
+            </main>
+            <nav class="col-md-3 d-none d-md-block" role="navigation">
+                <div class="toc-wrapper">
+                    <div id="toc-list" class="list-group list-group-flush"></div>
+                </div>
+            </nav>
+        </div>
+    </article>
+
+    <aside class="border-top pt-5 mt-5">
+        <h3 class="h5 fw-bold text-uppercase mb-3">Sobre o autor</h3>
+        <div class="d-flex align-items-center">
+            <div class="me-3 flex-shrink-0">
+                <img src="../../../public/blog/author/3/ProfilePicture.jpg"
+                     alt="Lucio Pelinson"
+                     class="rounded-circle"
+                     width="64"
+                     height="64"
+                     loading="lazy"
+                     style="object-fit: cover;"/>
+            </div>
+            <div>
+                <h3 class="h6 fw-bold mb-1">
+                    <a href="../author/lucio.html">Lucio Pelinson</a>
+                </h3>
+                <p class="mb-0 text-muted small">Lucio Pelinson &#xE9; bacharel em Ci&#xEA;ncia da Computa&#xE7;&#xE3;o e possui mais de 20 anos de experi&#xEA;ncia no setor de Tecnologia da Informa&#xE7;&#xE3;o. &#xD;&#xA;Atualmente, atua como diretor de tecnologia na JJ Consulting, onde lidera projetos de transforma&#xE7;&#xE3;o digital, com foco em arquitetura de software, migra&#xE7;&#xE3;o de sistemas legados e implementa&#xE7;&#xE3;o de solu&#xE7;&#xF5;es escal&#xE1;veis. Ao longo de sua carreira, Lucio tem se destacado por sua abordagem pr&#xE1;tica e estrat&#xE9;gica na moderniza&#xE7;&#xE3;o de aplica&#xE7;&#xF5;es, especialmente em ambientes corporativos complexos. Al&#xE9;m disso, &#xE9; reconhecido por sua capacidade de alinhar tecnologia aos objetivos de neg&#xF3;cio, promovendo inova&#xE7;&#xE3;o e efici&#xEA;ncia operacional.&#xD;&#xA;</p>
+                    <a href="https://www.linkedin.com/in/luciopelinson" target="_blank" rel="noopener"
+                       class="btn btn-sm btn-outline-primary d-inline-flex align-items-center gap-1">
+                        <i class="bi bi-linkedin"></i>
+                        LinkedIn
+                    </a>
+                    <a href="https://github.com/LucioPelinson" target="_blank" rel="noopener"
+                       class="btn btn-sm btn-outline-secondary d-inline-flex align-items-center gap-1">
+                        <i class="bi bi-github"></i>
+                        GitHub
+                    </a>
+            </div>
+        </div>
+    </aside>
+    <div class="mt-5">
+        <a href="../../blog.html" class="btn btn-outline-secondary">
+            &larr; Voltar ao &#xED;nicio
+        </a>
+    </div>
+</section>
+
+
+
+
+    <footer class="footer bg-dark">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-5 col-md-12 mb-4 pb-2">
+                    <a class="footer-logo" href="#">
+                    <img src="../../../images/logo_jj-consulting-hv-adj.png" alt="JJ Consulting" loading="lazy" />
+                    </a>
+                    <ul class="list-unstyled social-icon social mx-auto mt-4">
+                        <li class="list-inline-item">
+                            <a href="http://fb.com/jjconsulting.com.br" target="_blank">
+                                <i class="bi bi-facebook" title="Facebook"></i>
+                            </a>
+                        </li>
+                        <li class="list-inline-item">
+                            <a href="https://www.linkedin.com/company/jjconsultingbr" target="_blank">
+                                <i class="bi bi-linkedin" title="Linkedin"></i>
+                            </a>
+                        </li>
+                        <li class="list-inline-item">
+                            <a href="https://instagram.com/jjconsulting.com.br/" target="_blank">
+                                <i class="bi bi-instagram" title="Instagram"></i>
+                            </a>
+                        </li>
+                        <li class="list-inline-item">
+                            <a href="https://api.whatsapp.com/send?phone=551138575322&amp;text=Ol%C3%A1%2C%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es%20sobre%20os%20servi%C3%A7os%20da%20JJ%20Consulting." target="_blank">
+                                <i class="bi bi-whatsapp" title="Fale Conosco via WhatsApp"></i>
+                            </a>
+                        </li>
+                        <li class="list-inline-item">
+                            <a href="mailto:info@jjconsulting.com.br">
+                                <i class="bi bi-envelope" title="E-mail"></i>
+                            </a>
+                        </li>
+                        <li class="list-inline-item">
+                            <a href="tel:+551138575322">
+                                <i class="bi bi-telephone" title="Telefone"></i>
+                            </a>
+                        </li>
+                    </ul><!--end icon-->
+                </div><!--end col-->
+
+                <div class="col-lg-3 col-md-3 mb-4 pb-2">
+                    <h7 class="text-light text-uppercase footer-head">Mapa do Site</h7>
+                    <ul class="list-unstyled footer-list mt-4">
+                        <li class="mt-2"><a href="../../../pt-br.html" class="text-foot"><i class="bi bi-chevron-right me-2"></i> In&#xED;cio</a></li>
+                        <li class="mt-2"><a href="../../products.html" class="text-foot"><i class="bi bi-chevron-right me-2"></i> Produtos</a></li>
+                        <li class="mt-2"><a href="../../../pt-br.html#solucoes" class="text-foot"><i class="bi bi-chevron-right me-2"></i> Solu&#xE7;&#xF5;es</a></li>
+                        <li class="mt-2"><a href="../../../pt-br.html#clientes" class="text-foot"><i class="bi bi-chevron-right me-2"></i> Clientes</a></li>
+                        <li class="mt-2"><a href="../../contact.html" class="text-foot"><i class="bi bi-chevron-right me-2"></i> Contato</a></li>
+                        <li class="mt-2"><a class="text-foot" href="../../jobs.html" target="_blank"><i class="bi bi-chevron-right me-2"></i> Fa&#xE7;a Parte</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-lg-4 col-md-8 mb-4 pb-2">
+                    <h7 class="text-light text-uppercase footer-head">Onde nos encontrar</h7>
+                    <div class="list-unstyled text-foot mt-4 mb-0">
+                        <div class="footer-end">
+                            <a href="#" target="_blank">
+                                <i class="bi bi-geo-alt"></i> R. Aníbal Benevolo, 94 - São Paulo
+                            </a>
+                            <br>
+                            <a href="mailto:info@jjconsulting.com.br">
+                                <i class="bi bi-envelope"></i> info@jjconsulting.com.br
+                            </a>
+                            <br>
+                            <a href="tel:+551138575322" target="_blank">
+                                <i class="bi bi-telephone"></i> (11) 3857-5322
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div><!--end row-->
+        </div><!--end container-->
+        <hr>
+        <div class="footer-bar">
+            <div class="container text-foot text-center">
+                <div class="row align-items-center">
+                    <div class="col-sm-12">
+                        <div class="text-sm-center">
+                            <p class="mb-0">© 2006 ~ 2025 JJ Consulting<br />Todos os direitos reservados.</p>
+                        </div>
+                    </div><!--end col-->
+                </div><!--end row-->
+            </div><!--end container-->
+        </div><!--end container-->
+        <!-- Chat WhatsApp -->
+        <div id="btnFlutuante" class="floating-btn animate__animated animate__bounce animate__fast animate__delay-2s animate__repeat-3">
+            <div class="icon">
+                <i class="bi bi-whatsapp"></i>
+            </div>
+            <span>(11) 3857-5322</span>
+        </div>
+    </footer>
+
+
+
+<script src="../../../js/aos.min.js"></script>
+<script src="../../../js/jquery/dist/jquery.min.js"></script>
+<script src="../../../js/bootstrap.bundle.min.js"></script>
+<script src="../../../js/bootstrap-select.min.js"></script>
+
+<script src="../../../js/morphext.min.js"></script> 
+
+<script src="../../../js/appc395.js?v=X8IOXcn2aHmfuC4d4xkTpggtRFrZ-U8zSfB7-Tbidno"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        AOS.init({
+            duration: 1000,
+            once: false,
+            offset: 200,
+        });
+    });
+</script>
+
+
+    <script src="../../../_content/JJConsulting.Tech.Blog/js/highlight.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const tocList = document.getElementById('toc-list')
+            const tocWrapper = document.querySelector('.toc-wrapper')
+            const mainContent = document.getElementById('mainContent')
+            const navCol = tocWrapper.closest('nav')
+            const h2s = document.querySelectorAll('.article-content h2')
+
+            if (h2s.length <= 1) {
+                tocWrapper.style.display = 'none'
+                if (navCol) {
+                    navCol.classList.add('d-none')
+                    mainContent.classList.remove('col-md-9')
+                    mainContent.classList.add('col-sm-12')
+                }
+                return
+            }
+
+            h2s.forEach((h2, index) => {
+                const id = h2.id || `section-${index}`
+                h2.id = id
+                const link = document.createElement('a')
+                link.href = `#${id}`
+                link.className = 'list-group-item list-group-item-action'
+                link.textContent = h2.textContent
+                tocList.appendChild(link)
+            })
+
+            hljs.highlightAll();
+            
+            new bootstrap.ScrollSpy(document.body, {
+                target: '#toc-list'
+            });
+        })
+
+    </script>
+
+</body>
+
+<!-- Mirrored from www.jjconsulting.com.br/pt-br/blog/arquitetura-de-software/migrando-monolito-para-microsservicos by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 10 Jul 2025 14:47:36 GMT -->
+</html>

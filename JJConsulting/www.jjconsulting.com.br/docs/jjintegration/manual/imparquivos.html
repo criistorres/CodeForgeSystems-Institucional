@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html>
+  
+<!-- Mirrored from www.jjconsulting.com.br/docs/jjintegration/manual/imparquivos.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 10 Jul 2025 14:49:08 GMT -->
+<head>
+    <meta charset="utf-8">
+      <title>Importa&#231;&#227;o de Arquivos | JJIntegration </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Importa&#231;&#227;o de Arquivos | JJIntegration ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      
+      
+      
+      <meta name="docfx:docurl" content="https://gitlab.jjconsulting.com.br/jjconsulting/jjintegration/blob/master/docs/manual/imparquivos.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index-2.html">
+            <img id="logo" class="svg" src="../logo.png" alt="JJIntegration - Manual">
+            JJIntegration - Manual
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="importação-de-arquivos">Importação de Arquivos</h1>
+
+<p>Importação de arquivos é uma função onde pode-se incluir, alterar, excluir arquivos cadastrados no sistema e atualizar a lista de arquivos.</p>
+<p>Esta seção pode ser acessada pelo menu lateral em Tarefas ou menu de utilidades &gt; Ferramentas &gt; Importação de Arquivos.</p>
+<p>A <strong>importação de arquivos</strong> envolve trazer dados de um sistema externo para o sistema de destino. Isso geralmente é feito lendo o conteúdo de um arquivo e inserindo os dados relevantes no sistema de destino. Por exemplo, você pode importar dados de um arquivo CSV, XML ou JSON para atualizar o banco de dados do seu sistema.</p>
+<br>
+<div align="center">
+<p><img src="../images/img123.png" alt="import arq"></p>
+</div>
+<br>
+<h3 id="icone-exportacao-importação-de-arquivos"><img src="../images/icon11.bmp" alt="icone exportacao"> <strong>Importação de Arquivos</strong></h3>
+<ul>
+<li>Ao selecionar o sistema irá exibir uma tela onde será possível incluir, alterar e excluir mapeamentos de arquivos, exportar layouts, executar scripts, atualizar e exibir dependências.</li>
+</ul>
+<br>
+<div align="center">
+<p><img src="../images/img84.png" alt="opc import"></p>
+</div>
+<br>
+<p>Selecione o botão <strong>Incluir</strong> <img src="../images/icon02.bmp" alt="incluir import"> para incluir um novo mapeamento de importação de arquivos. Ao selecionar o sistema irá exibir uma tela para cadastro onde terá cinco abas para configuração sendo elas: arquivo, detalhes, mapeamento, eventos e script (criação de estruturas), ao finalizar o preenchimento selecione o botão &quot;Ok&quot; para salvar o novo mapeamento.</p>
+<ul>
+<li>Na aba &quot;<strong>Conexões</strong>&quot; preencha os dados de formato, origem e destino desejados para a importação do arquivo.</li>
+</ul>
+<br>
+<div align="center">
+<p><img src="../images/img85.png" alt="arq import"></p>
+</div>
+<br>
+<ul>
+<li>Na aba &quot;<strong>Detalhes</strong>&quot; defina os detalhes de importação como número de linhas desejado, se deseja ou não ignorar a primeira linha e aborto de importação caso necessário.</li>
+</ul>
+<br>
+<div align="center">
+<p><img src="../images/img86.png" alt="det import"></p>
+</div>
+<br>
+<ul>
+<li>Na aba &quot;<strong>Mapeamento</strong>&quot; pode-se adicionar ou remover colunas e definir as propriedades do arquivo como nome, descrição, tipo, tamanho, valor padrão e etc.</li>
+</ul>
+<br>
+<div align="center">
+<p><img src="../images/img87.png" alt="map import"></p>
+</div>
+<br>
+<ul>
+<li>Na aba &quot;<strong>Eventos</strong>&quot; selecione o evento que deseja executar e preencha o campo Script com o script de banco de dados necessário para execução.</li>
+</ul>
+<br>
+<div align="center">
+<p><img src="../images/img88.png" alt="evnt import"></p>
+</div>
+<br>
+<p><strong>Tipos de evento:</strong></p>
+<ul>
+<li><p>Após criar todas as tabelas:</p>
+<p>Ao executar o agendamento pela primeira vez, se não existir a tabela no banco de dados o sistema irá executar os scripts de criação da tabela e das procedures. Esse evento será disparado após esse procedimento.</p>
+</li>
+<li><p>Ao executar o agendamento:</p>
+<p>Ao executar agendamento e existir arquivos para ser importado. Esse evento será disparado uma única vez antes de processar todos os arquivos.</p>
+</li>
+<li><p>Antes de efetuar importação de dados:</p>
+<p>Ao executar agendamento e existir arquivos para ser importado. Esse evento será disparado antes de iniciar a importação de cada arquivo.</p>
+</li>
+<li><p>Após efetuar importação de dados:</p>
+<p>Ao executar agendamento e existir arquivos para ser importado. Esse evento será disparado no términon da importação de cada arquivo.</p>
+</li>
+</ul>
+<br>
+<ul>
+<li>Na aba &quot;<strong>Script (criação de estrutura)</strong>&quot; selecione o botão &quot;Gerar Script&quot; para gerar a estrutura da importação e após selecione o botão &quot;Executar Script&quot; para executar a leitura da estrutura criada.</li>
+</ul>
+<br>
+<div align="center">
+<p><img src="../images/img89.png" alt="script import"></p>
+</div>
+<br>
+<p>Selecione o botão <strong>Alterar</strong> <img src="../images/icon03.bmp" alt="alt import"> para editar um mapeamento de importação de arquivos. Ao selecionar o sistema irá exibir uma tela com detalhes onde terá cinco abas de configuração sendo elas: arquivo, detalhes, mapeamento, eventos e script (criação de estruturas), ao finalizar as alterações selecione o botão &quot;Ok&quot; para salvar e alterar o mapeamento. Também é possível <strong>Duplicar</strong> a importação já criada, visando simplificar o processo.</p>
+<ul>
+<li>Na aba &quot;<strong>Conexões</strong>&quot; altere os dados de formato, origem e destino desejados para a importação do arquivo.</li>
+</ul>
+<br>
+<div align="center">
+<p><img src="../images/img85.png" alt="arq02 import"></p>
+</div>
+<br>
+<ul>
+<li>Na aba &quot;<strong>Detalhes</strong>&quot; altere as definições de detalhes de importação como número de linhas desejado, se deseja ou não ignorar a primeira linha e aborto de importação caso necessário.</li>
+</ul>
+<br>
+<div align="center">
+<p><img src="../images/img86.png" alt="arq03 import"></p>
+</div>
+<br>
+<ul>
+<li>Na aba &quot;<strong>Mapeamento</strong>&quot; adicione novas colunas ou remova colunas existentes e altere as propriedades do arquivo como nome, descrição, tipo, tamanho, valor padrão e etc, caso seja necessário.</li>
+</ul>
+<br>
+<div align="center">
+<p><img src="../images/img87.png" alt="map03 import"></p>
+</div>
+<br>
+<ul>
+<li>Na aba &quot;<strong>Eventos</strong>&quot; altere o evento que deseja executar e preencha o campo Script com o script de banco de dados necessário para execução.</li>
+</ul>
+<br>
+<div align="center">
+<p><img src="../images/img88.png" alt="event03 import"></p>
+</div>
+<br>
+<ul>
+<li>Na aba &quot;<strong>Script (criação de estrutura)</strong>&quot; selecione o botão &quot;Gerar Script&quot; para gerar a estrutura da importação e após selecione o botão &quot;Executar Script&quot; para executar a leitura da estrutura criada.</li>
+</ul>
+<br>
+<div align="center">
+<p><img src="../images/img89.png" alt="script03 import"></p>
+</div>
+<br>
+<p>Para excluir um mapeamento selecione o mapeamento desejado e após selecione o botão <strong>Excluir</strong> <img src="../images/icon04.bmp" alt="excluir03 import">, após selecionar o sistema irá exibir uma mensagem de confirmação, selecione botão &quot;Ok&quot; para confirmar e excluir.</p>
+<br>
+<div align="center">
+<p><img src="../images/img90.png" alt="excluir03 import"></p>
+</div>
+<br>
+<p>Para executar um script selecione o arquivo desejado na lista e após selecione o botão <strong>Executar Script</strong> <img src="../images/icon19.bmp" alt="exec03 import">, após selecionar o sistema irá executar o script e ao finalizar irá exibir uma mensagem informando, selecione o botão &quot;Ok&quot; para fechar a mensagem e continuar o uso normal do JJ Integration.</p>
+<br>
+<div align="center">
+<p><img src="../images/img91.bmp" alt="exec03 import"></p>
+</div>
+<br>
+<p>Para atualizar a lista de tarefas selecione o botão <strong>Atualizar</strong> <img src="../images/icon08.bmp" alt="exec08 import">, após selecionar o sistema irá atualizar a lista sendo possível dar continuidade nas atividades normalmente.</p>
+<p>Para exibir dependencias da tarefa selecionada, selecione o botão <strong>Exibir Dependências</strong> <img src="../images/icon01.02.png" alt="atualizar">, após selecionar o sistema irá exibir a lista de dependências da tarefa caso exista alguma.</p>
+<br>
+<div align="center">
+<p><img src="../images/img83.1.png" alt="excluiralt"></p>
+</div><br>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://gitlab.jjconsulting.com.br/jjconsulting/jjintegration/blob/master/docs/manual/imparquivos.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <div><span>JJIntegration - Cross Server Version</span></div>
+        </div>
+      </div>
+    </footer>
+  </body>
+
+<!-- Mirrored from www.jjconsulting.com.br/docs/jjintegration/manual/imparquivos.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 10 Jul 2025 14:49:12 GMT -->
+</html>

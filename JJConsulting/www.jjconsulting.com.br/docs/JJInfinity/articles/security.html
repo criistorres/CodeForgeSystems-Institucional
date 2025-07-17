@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+  
+<!-- Mirrored from www.jjconsulting.com.br/docs/JJInfinity/articles/security.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 10 Jul 2025 14:49:33 GMT -->
+<head>
+    <meta charset="utf-8">
+      <title>Seguran&#231;a </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Seguran&#231;a ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-60L9XB7X4J"></script>
+      <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-60L9XB7X4J');
+      </script>
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index-2.html">
+            <img id="logo" class="svg" src="../logo.png" alt="JJInfinity">
+            JJInfinity
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="segurança">Segurança</h1>
+
+<h2 id="introdução">Introdução</h2>
+<p>O <strong>ASP.NET Core Identity</strong> é uma biblioteca da Microsoft para gerenciamento de autenticação e autorização em
+aplicações <strong>ASP.NET Core</strong>. Ele fornece recursos como login, gerenciamento de usuários, funções, políticas de
+segurança, tokens e integração com autenticação externa.</p>
+<p><strong>JJInfinity</strong> adota essas práticas e também faz uso extensivo de recursos prontos do <strong>ASP.NET Core</strong>, além de
+utilizar o <strong>YARP (Yet Another Reverse Proxy)</strong> para roteamento avançado e balanceamento de carga em cenários
+distribuídos.</p>
+<p>As configurações abaixo representam as políticas de segurança padrões do JJInfinity.</p>
+<hr>
+<h3 id="menor-privilégio">Menor Privilégio</h3>
+<p>Usuários autenticados não possuem acesso a nenhuma funcionalidade por padrão. O acesso deve ser explicitamente concedido
+via roles, claims ou policies.</p>
+<hr>
+<h3 id="senhas-irreversíveis-hashing">Senhas Irreversíveis (Hashing)</h3>
+<p>Senhas são armazenadas utilizando algoritmos de hash criptograficamente seguros com salt. Não é possível reverter o hash
+para descobrir a senha original.</p>
+<hr>
+<h3 id="bloqueio-de-conta-lockout">Bloqueio de Conta (Lockout)</h3>
+<p>Contas são bloqueadas automaticamente após múltiplas tentativas de login mal-sucedidas consecutivas, protegendo contra
+ataques de força bruta.</p>
+<hr>
+<h3 id="autenticação-em-duas-etapas-2fa">Autenticação em Duas Etapas (2FA)</h3>
+<p>Suporte nativo a autenticação em duas etapas usando e-mail, SMS ou aplicativo autenticador.</p>
+<hr>
+<h3 id="autorização-baseada-em-roles-e-claims">Autorização Baseada em Roles e Claims</h3>
+<p>Controle granular de permissões via atribuição de roles e claims ao usuário. As views e APIs verificam autorização antes
+de executar qualquer ação.</p>
+<hr>
+<h3 id="validação-de-anti-forgery-tokens">Validação de Anti-Forgery Tokens</h3>
+<p>Todas requisições POST que modificam dados exigem tokens antifalsificação, prevenindo ataques CSRF.</p>
+<hr>
+<h3 id="cookies-seguros">Cookies Seguros</h3>
+<p>Cookies de autenticação usam flags <code>HttpOnly</code>, <code>Secure</code> e <code>SameSite=Strict</code> por padrão.</p>
+<hr>
+<h3 id="proteção-de-dados-data-protection-api">Proteção de Dados (Data Protection API)</h3>
+<p>Tokens de recuperação, autenticação e redefinição de senha são criptografados com a Data Protection API.</p>
+<hr>
+<h3 id="proteção-contra-enumeração-de-usuários">Proteção contra Enumeração de Usuários</h3>
+<p>Mensagens de erro genéricas são utilizadas em autenticação para evitar que invasores confirmem a existência de usuários
+por tentativa e erro.</p>
+<hr>
+<h3 id="proxy-reverso-com-isolamento-de-módulos">Proxy Reverso com Isolamento de Módulos</h3>
+<p>O <strong>YARP (Yet Another Reverse Proxy)</strong> é utilizado para expor apenas endpoints públicos da aplicação. Módulos internos e
+administrativos não são acessíveis diretamente pela internet, garantindo isolamento de funcionalidades sensíveis.</p>
+<hr>
+<h3 id="rate-limiting">Rate Limiting</h3>
+<p>Mecanismos de limitação de requisições são aplicados a endpoints críticos para prevenir abusos e ataques de negação de
+serviço (DoS). O sistema pode impor limites por IP, usuário ou rota específica.</p>
+<hr>
+<h3 id="expiração-e-renovação-de-tokens">Expiração e Renovação de Tokens</h3>
+<p>Tokens de autenticação têm tempo de expiração controlado.</p>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Version - 4.0.x
+        </div>
+      </div>
+    </footer>
+  </body>
+
+<!-- Mirrored from www.jjconsulting.com.br/docs/JJInfinity/articles/security.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 10 Jul 2025 14:49:33 GMT -->
+</html>

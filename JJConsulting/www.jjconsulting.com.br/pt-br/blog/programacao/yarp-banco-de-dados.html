@@ -1,0 +1,561 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+
+<!-- Mirrored from www.jjconsulting.com.br/pt-br/blog/programacao/yarp-banco-de-dados by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 10 Jul 2025 14:47:39 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+    <meta charset="utf-8"/>
+    <title>Como Usar o YARP com Configura&#xE7;&#xE3;o Din&#xE2;mica via Banco de Dados no ASP.NET Core</title>
+
+    <meta name="language" content="pt-BR" />
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    
+    <meta name="description" content="Aprenda como configurar o YARP (Yet Another Reverse Proxy) no ASP.NET Core para carregar rotas e clusters diretamente de um banco de dados." />
+    <meta name="author" content="Gustavo Mauricio de Barros" />
+    <meta name="robots" content="index, follow" />
+    <meta name="keywords" content="yarp banco de dados, yarp asp.net core, yarp configura&#xE7;&#xE3;o din&#xE2;mica, yarp proxy reverso banco de dados, caminho de santiago, yarp rotas din&#xE2;micas, yarp configura&#xE7;&#xE3;o runtime" />
+
+
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="Como Usar o YARP com Configura&#xE7;&#xE3;o Din&#xE2;mica via Banco de Dados no ASP.NET Core" />
+    <meta property="og:description" content="Aprenda como configurar o YARP (Yet Another Reverse Proxy) no ASP.NET Core para carregar rotas e clusters diretamente de um banco de dados." />
+        <meta property="og:image" content="../../../public/blog/article/25/yarp-santiago-way.png" />
+
+    <meta property="og:url" content="yarp-banco-de-dados.html" />
+    <meta property="og:site_name" content="JJConsulting" />
+    <meta property="article:published_time" content="2025-05-24T18:27:33Z" />
+    <meta property="article:author" content="Gustavo Mauricio de Barros" />
+    <meta property="article:section" content="Programa&#xE7;&#xE3;o" />
+
+    <meta name="twitter:title" content="Como Usar o YARP com Configura&#xE7;&#xE3;o Din&#xE2;mica via Banco de Dados no ASP.NET Core" />
+    <meta name="twitter:description" content="Aprenda como configurar o YARP (Yet Another Reverse Proxy) no ASP.NET Core para carregar rotas e clusters diretamente de um banco de dados." />
+        <meta name="twitter:image" content="../../../public/blog/article/25/yarp-santiago-way.png" />
+
+    <meta name="twitter:site" content="JJConsulting" />
+
+    <link rel="stylesheet" href="../../../_content/JJConsulting.Tech.Blog/css/article.css" />
+    <link rel="stylesheet" href="../../../_content/JJConsulting.Tech.Blog/css/highlight.min.css" />
+
+    
+    <link rel="icon" href="../../../images/logo-jj-cropped.png" sizes="192x192" />
+    <link rel="preload" href="../../../images/jj-bg.webp" as="image" />
+    <link rel="preload" href="../../../images/logo-horizontal-jj.webp" as="image" />
+        
+    <link rel="stylesheet" href="../../../css/bootstrap.min.css" />
+    <link rel="stylesheet" href="../../../css/bootstrap-icons/font/bootstrap-icons.min.css" />
+    <link rel="stylesheet" href="../../../css/bootstrap-select.min.css" />
+    <link rel="stylesheet" href="../../../css/aos.min.css" />
+    <link rel="stylesheet" href="../../../css/style30f4.css?v=3" />
+    <link rel="stylesheet" href="../../../css/animate.min.css" media="print" onload="this.onload=null;this.removeAttribute('media');" />    
+
+        <!-- Google tag (gtag.js) -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-60L9XB7X4J"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-60L9XB7X4J');
+        </script>
+</head>
+
+<body>
+
+
+
+<div id="top-navbar" class="container-fluid d-none d-lg-block">
+    <div class="row">
+        <div class="col">
+            <a class="tn-link text-sm-start ms-3" href="http://fb.com/jjconsulting.com.br" target="_blank">
+                <span class="bi bi-facebook"></span><span class="ic-info ic-info-fb"> fb.com/jjconsulting.com.br</span>
+            </a>
+            <a class="tn-link text-sm-start ms-3" href="http://instagram.com/jjconsulting.com.br" target="_blank">
+                <span class="bi bi-instagram"></span><span class="ic-info ic-info-insta"> instagram.com/jjconsulting.com.br</span>
+            </a>
+            <a class="tn-link text-sm-start ms-3" href="https://www.linkedin.com/company/jjconsultingbr" target="_blank">
+                <span class="bi bi-linkedin"></span><span class="ic-info ic-info-link"> linkedin.com/company/jjconsultingbr</span>
+            </a>
+            <a class="tn-link text-sm-start ms-3" href="https://api.whatsapp.com/send?phone=551138575322&amp;text=Ol%C3%A1%2C%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es%20sobre%20os%20servi%C3%A7os%20da%20JJ%20Consulting." target="_blank">
+                <span class="bi bi-whatsapp"></span><span class="ic-info ic-info-chat"> Fale Conosco via WhatsApp</span>
+            </a>
+            <a class="tn-link text-sm-start ms-3" href="mailto:info@jjconsulting.com.br">
+                <span class="bi bi-envelope"></span><span class="ic-info"> info@jjconsulting.com.br</span>
+            </a>
+            <a class="tn-link text-sm-start ms-3" href="tel:+551138575322">
+                <span class="bi bi-telephone"></span><span class="ic-info ic-info-tel"> +55 (11) 3857-5322 </span>
+            </a>
+        </div>
+        <div class="col text-end">
+            
+
+<div class="selectLanguageWrap" title="Request culture provider: CustomRequestCultureProvider">
+    <form class="selectLanguage form-horizontal" method="post" action="https://www.jjconsulting.com.br/pt-br/home/setlanguage?returnUrl=~%2Fpt-br%2Fblog%2Fprogramacao%2Fyarp-banco-de-dados">
+        <label for="currentCulture">Language:</label> 
+
+        <select name="culture" onchange="this.form.submit();" class="valid selectpicker" data-val="true" data-val-required="The Name field is required." aria-label="Select Language" id="currentCulture">
+            <option value="pt-br" data-content="<img class='img-flag' src='../../../images/flags/pt-br.png' alt=''><span>Português (Brasil)</span>" selected="selected">Português (Brasil)</option>
+            <option value="en-us" data-content="<img class='img-flag' src='../../../images/flags/en-us.png' alt=''><span>English (United States)</span>">English (United States)</option>
+            <option value="es-mx" data-content="<img class='img-flag' src='../../../images/flags/es-mx.png' alt=''><span>Español (México)</span>">Español (México)</option>
+        </select>
+       
+    </form>
+</div>
+            <a class="btn btn-sm btn-dark" href="../../../infinity/Account/Login89ef.html" target="_blank">
+                Acesso Colaboradores
+            </a>
+        </div>
+    </div>
+</div>
+
+<nav id="main-navbar" class="navbar navbar-expand-lg navbar-custom navbar-light bg-light ">
+    <div class="container">
+        <a class="navbar-brand" href="../../../pt-br.html">
+            <img src="../../../images/logo-horizontal-jj.webp" alt="JJ Consulting" class="img-fluid" loading="lazy" width="270" height="50">
+        </a>
+
+        <button id="btnMenuMobile" class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-list"></i>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav ms-auto text-center">
+                <li class="nav-item">
+                    <a class="nav-link " href="../../../pt-br.html">In&#xED;cio</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " href="../../products.html">Produtos</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " href="../../../pt-br4f77.html?section=solucoes">Solu&#xE7;&#xF5;es</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " href="../../../pt-br03d6.html?section=clientes">Clientes</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " href="../../contact.html">Contato</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " href="../../jobs.html">Fa&#xE7;a Parte</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="../../blog.html">Blog</a>
+                </li>
+            </ul>
+
+            <div class="d-lg-none text-center mt-3">
+                <p class="mb-2">Selecione o Idioma</p>
+                
+
+<div class="selectLanguageWrap" title="Request culture provider: CustomRequestCultureProvider">
+    <form class="selectLanguage form-horizontal" method="post" action="https://www.jjconsulting.com.br/pt-br/home/setlanguage?returnUrl=~%2Fpt-br%2Fblog%2Fprogramacao%2Fyarp-banco-de-dados">
+        <label for="currentCulture">Language:</label> 
+
+        <select name="culture" onchange="this.form.submit();" class="valid selectpicker" data-val="true" data-val-required="The Name field is required." aria-label="Select Language" id="currentCulture">
+            <option value="pt-br" data-content="<img class='img-flag' src='../../../images/flags/pt-br.png' alt=''><span>Português (Brasil)</span>" selected="selected">Português (Brasil)</option>
+            <option value="en-us" data-content="<img class='img-flag' src='../../../images/flags/en-us.png' alt=''><span>English (United States)</span>">English (United States)</option>
+            <option value="es-mx" data-content="<img class='img-flag' src='../../../images/flags/es-mx.png' alt=''><span>Español (México)</span>">Español (México)</option>
+        </select>
+       
+    </form>
+</div>
+            </div>
+        </div>
+    </div>
+</nav>
+
+
+
+
+
+
+
+<section class="container py-5">
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb bg-transparent p-0">
+            <li class="breadcrumb-item">
+                <a href="../../blog.html" class="text-decoration-none">Blog</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="../category/programacao.html"
+                   class="text-decoration-none">Programa&#xE7;&#xE3;o</a>
+            </li>
+            <li class="breadcrumb-item active text-muted" aria-current="page">Como Usar o YARP com Configura&#xE7;&#xE3;o Din&#xE2;mica via Banco de Dados no ASP.NET Core</li>
+        </ol>
+    </nav>
+    <article class="mb-5" data-bs-spy="scroll" data-bs-target="#toc-list" tabindex="0">
+        <header class="mb-4">
+            <h1 class="display-5 fw-bold">Como Usar o YARP com Configura&#xE7;&#xE3;o Din&#xE2;mica via Banco de Dados no ASP.NET Core</h1>
+            <p class="text-muted small">
+                Publicado em
+                <time
+                    datetime="2025-05-24">24 de maio de 2025</time>
+                por <a href="../author/gumbarros.html"><span class="fw-semibold">Gustavo Mauricio de Barros</span></a>
+            </p>
+        </header>
+
+            <div class="header-image-container rounded mb-5">
+                <img src="../../../public/blog/article/25/yarp-santiago-way.png" alt="Como Usar o YARP com Configura&#xE7;&#xE3;o Din&#xE2;mica via Banco de Dados no ASP.NET Core" class="blurred-image"
+                     loading="lazy"/>
+                <img src="../../../public/blog/article/25/yarp-santiago-way.png" alt="Como Usar o YARP com Configura&#xE7;&#xE3;o Din&#xE2;mica via Banco de Dados no ASP.NET Core" class="main-image" loading="lazy"/>
+            </div>
+
+
+        <div class="d-flex gap-3 my-4">
+            <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwww.jjconsulting.com.br%2Fpt-br%2Fblog%2Fprogramacao%2Fyarp-banco-de-dados"
+               target="_blank" rel="noopener noreferrer" title="Compartilhar no Facebook" aria-label="Compartilhar no Facebook">
+                <i class="bi bi-facebook text-primary fs-3"></i>
+            </a>
+            <a href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.jjconsulting.com.br%2Fpt-br%2Fblog%2Fprogramacao%2Fyarp-banco-de-dados&amp;text=Como%20Usar%20o%20YARP%20com%20Configura%C3%A7%C3%A3o%20Din%C3%A2mica%20via%20Banco%20de%20Dados%20no%20ASP.NET%20Core"
+               target="_blank" rel="noopener noreferrer" title="Compartilhar no Twitter" aria-label="Compartilhar no Twitter">
+                <i class="bi bi-twitter fs-3"></i>
+            </a>
+            <a href="mailto:?subject=Como%20Usar%20o%20YARP%20com%20Configura%C3%A7%C3%A3o%20Din%C3%A2mica%20via%20Banco%20de%20Dados%20no%20ASP.NET%20Core&body=https%3A%2F%2Fwww.jjconsulting.com.br%2Fpt-br%2Fblog%2Fprogramacao%2Fyarp-banco-de-dados"
+               title="Enviar por Email" aria-label="Enviar por Email">
+                <i class="bi bi-envelope text-secondary fs-3"></i>
+            </a>
+            <a href="https://api.whatsapp.com/send?text=Como%20Usar%20o%20YARP%20com%20Configura%C3%A7%C3%A3o%20Din%C3%A2mica%20via%20Banco%20de%20Dados%20no%20ASP.NET%20Core%20https%3A%2F%2Fwww.jjconsulting.com.br%2Fpt-br%2Fblog%2Fprogramacao%2Fyarp-banco-de-dados"
+               target="_blank" rel="noopener noreferrer" title="Compartilhar no WhatsApp" aria-label="Compartilhar no WhatsApp">
+                <i class="bi bi-whatsapp text-success fs-3"></i>
+            </a>
+            <a href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fwww.jjconsulting.com.br%2Fpt-br%2Fblog%2Fprogramacao%2Fyarp-banco-de-dados"
+               target="_blank" rel="noopener noreferrer" title="Compartilhar no LinkedIn" aria-label="Compartilhar no LinkedIn">
+                <i class="bi bi-linkedin" style="color: #0077b5; font-size: 1.75rem;"></i>
+            </a>
+        </div>
+
+
+        <div class="row">
+            <main class="col-md-9" id="mainContent">
+                <section class="article-content fs-5 lh-lg">
+                    <h2>O que é o YARP e por que utilizá-lo?</h2>
+<p>
+    <strong>YARP</strong> (Yet Another Reverse Proxy) é um proxy reverso open-source desenvolvido pela Microsoft para o <strong>ASP.NET Core</strong>.</p>
+ <p>Com o YARP, é possível construir API gateways, load balancers e proxies reversos escaláveis e eficientes. Eu particularmente gosto muito do YARP, pois ele é extremamente customizável e está bem integrado à pipeline do ASP.NET Core. Em uma arquitetura de microsserviços, um proxy reverso é muito importante para abstrair problemas com autenticação, por exemplo, e atua como uma camada central que unifica o acesso aos seus microsserviços, garantindo segurança e escalabilidade. Dessa forma, seu microsserviço pode se concentrar exclusivamente na lógica de negócio dele.</p>
+<p>Na imagem de capa, optei por usar uma foto tirada por mim mesmo no <a href="https://pt.wikipedia.org/wiki/Caminho_Português_de_Santiago" target="_blank">Caminho de Santiago</a>. Acredito que ela representa bem o funcionamento de um proxy direcionando o tráfego aos destinos disponíveis.</p>
+
+<h2>Vantagens de carregar a configuração do YARP do banco de dados</h2>
+<p>
+    Por padrão, o YARP utiliza o arquivo <code>appsettings.json</code> para configurar rotas e clusters, mas essa abordagem possui limitações, como a necessidade de acesso ao servidor para editar a configuração do proxy. Carregar
+    as configurações a partir de um banco de dados traz bastante benefícios, como:
+</p>
+<ul>
+    <li>Atualizações em tempo real sem downtime;</li>
+    <li>Centralização do gerenciamento de rotas e clusters;</li>
+    <li>Maior escalabilidade e facilidade de manutenção em ambientes distribuídos;</li>
+    <li>Possibilidade de controle e auditoria detalhada das alterações;</li>
+    <li>Interface simplificada para usuários menos técnicos configurarem o proxy.</li>
+</ul>
+
+<h2>Como recuperar a configuração do YARP a partir do banco de dados</h2>
+<p>
+    O YARP não fornece um mecanismo padrão para carregar configurações de um banco de dados, e isso faz sentido, pois está fora do escopo da biblioteca. Portanto, é necessário criar uma interface própria que forneça suas rotas e clusters armazenados. Por exemplo, a interface
+    <code>IReverseProxyRepository</code>:
+</p>
+<pre><code>public interface IReverseProxyRepository
+{
+    IReadOnlyList&lt;RouteConfig&gt; GetRoutes();
+    IReadOnlyList&lt;ClusterConfig&gt; GetClusters();
+}
+</code></pre>
+
+<h2>Implementação do <code>IProxyConfigProvider</code></h2>
+<p>
+    A interface <code>IProxyConfigProvider</code> do YARP é responsável por fornecer a configuração atual do proxy, incluindo rotas e clusters, para a pipeline do ASP.NET Core. Implementando essa interface, você pode carregar e atualizar as configurações
+    dinamicamente, como no nosso exemplo, diretamente do banco de dados, sem necessidade de reiniciar a aplicação.
+</p>
+<pre><code>public class DatabaseProxyConfigProvider : IProxyConfigProvider
+{
+    private volatile IProxyConfig _config;
+    private readonly IReverseProxyRepository _repository;
+
+    public DatabaseProxyConfigProvider(IReverseProxyRepository repository)
+    {
+        _repository = repository;
+        _config = LoadConfig();
+    }
+
+    public IProxyConfig GetConfig() => _config;
+
+    private IProxyConfig LoadConfig()
+    {
+        var routes = _repository.GetRoutes();
+        var clusters = _repository.GetClusters();
+        return new DatabaseProxyConfig(routes, clusters);
+    }
+
+    public void Reload()
+    {
+        _config = LoadConfig();
+        _config.SignalChange();
+    }
+}
+</code></pre>
+
+<h2>Implementação do <code>IProxyConfig</code></h2>
+<p>
+    A interface <code>IProxyConfig</code> representa a configuração atual do YARP, contendo as coleções de rotas e clusters. Além disso, expõe um <code>ChangeToken</code> que permite ao YARP detectar alterações na configuração, possibilitando atualizações dinâmicas durante a execução.
+</p>
+<pre><code>public class DatabaseProxyConfig : IProxyConfig
+{
+    private CancellationTokenSource _cts = new CancellationTokenSource();
+
+    public DatabaseProxyConfig(IReadOnlyList&lt;RouteConfig&gt; routes, IReadOnlyList&lt;ClusterConfig&gt; clusters)
+    {
+        Routes = routes;
+        Clusters = clusters;
+        ChangeToken = new CancellationChangeToken(_cts.Token);
+    }
+
+    public IReadOnlyList&lt;RouteConfig&gt; Routes { get; }
+
+    public IReadOnlyList&lt;ClusterConfig&gt; Clusters { get; }
+
+    public IChangeToken ChangeToken { get; private set; }
+
+    public void SignalChange()
+    {
+        var previousCts = Interlocked.Exchange(ref _cts, new CancellationTokenSource());
+        ChangeToken = new CancellationChangeToken(_cts.Token);
+        previousCts.Cancel();
+    }
+}
+</code></pre>
+
+<h2>Registro dos serviços no <code>Program.cs</code></h2>
+<p>Para finalizar,  registre seus serviços em sua <code>Program.cs</code>. Particularmente não sou fã de registrar eles  como no exemplo abaixo que criei para fins educativos. Prefiro registrar meus serviços em métodos de extensão como <a href="https://learn.microsoft.com/en-us/dotnet/core/extensions/dependency-injection#register-groups-of-services-with-extension-methods" target="_blank">neste exemplo.</a></p>
+<pre><code>var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddSingleton&lt;IReverseProxyRepository, ReverseProxyRepository&gt;();
+builder.Services.AddSingleton&lt;IProxyConfigProvider, DatabaseProxyConfigProvider&gt;();
+builder.Services.AddReverseProxy();
+
+var app = builder.Build();
+
+app.MapReverseProxy();
+
+app.Run();
+</code></pre>
+
+<h2>Conclusão</h2>
+<p>
+    Utilizando o <code>IProxyConfigProvider</code>, você garante que o YARP carregue a configuração diretamente do banco de dados ou do lugar que achar mais conveniente para seu projeto, permitindo atualizações dinâmicas e maior controle sobre seu proxy reverso.</.p>
+<p>Lembre-se que, dependendo do seu sistema e equipe, às vezes manter a configuração no <code>appsettings.json</code> pode acabar sendo mais prático, ainda mais se a configuração do seu proxy nunca for mudar. Gosto muito da frase "<i>Premature optimization is the root of all evil</i>", comece sempre do mais simples e melhore apenas quando existir a necessidade. As vezes seu time não precisa da configuração do banco de dados e você acabou criando uma camada extra de complexidade sem necessidade.
+</p>
+
+<h2>Documentação oficial do YARP</h2>
+<p>Para mais detalhes técnicos e exemplos, acesse a documentação oficial:</p>
+<p>
+    <a href="https://learn.microsoft.com/aspnet/core/fundamentals/servers/yarp/config-providers" target="_blank" rel="noopener noreferrer">YARP Configuration Providers - Microsoft Docs</a>
+</p>
+
+                </section>
+            </main>
+            <nav class="col-md-3 d-none d-md-block" role="navigation">
+                <div class="toc-wrapper">
+                    <div id="toc-list" class="list-group list-group-flush"></div>
+                </div>
+            </nav>
+        </div>
+    </article>
+
+    <aside class="border-top pt-5 mt-5">
+        <h3 class="h5 fw-bold text-uppercase mb-3">Sobre o autor</h3>
+        <div class="d-flex align-items-center">
+            <div class="me-3 flex-shrink-0">
+                <img src="../../../public/blog/author/1/me.jpg"
+                     alt="Gustavo Mauricio de Barros"
+                     class="rounded-circle"
+                     width="64"
+                     height="64"
+                     loading="lazy"
+                     style="object-fit: cover;"/>
+            </div>
+            <div>
+                <h3 class="h6 fw-bold mb-1">
+                    <a href="../author/gumbarros.html">Gustavo Mauricio de Barros</a>
+                </h3>
+                <p class="mb-0 text-muted small">L&#xED;der T&#xE9;cnico na JJ Consulting, possui ampla experi&#xEA;ncia no ecossistema .NET. Graduado em An&#xE1;lise e Desenvolvimento de Sistemas pelo IFSP, tem forte interesse por arquitetura de software, boas pr&#xE1;ticas de codifica&#xE7;&#xE3;o e em seu tempo livre gosta de viajar e praticar esportes.</p>
+                    <a href="https://www.linkedin.com/in/gumbarros" target="_blank" rel="noopener"
+                       class="btn btn-sm btn-outline-primary d-inline-flex align-items-center gap-1">
+                        <i class="bi bi-linkedin"></i>
+                        LinkedIn
+                    </a>
+                    <a href="https://www.github.com/gumbarros" target="_blank" rel="noopener"
+                       class="btn btn-sm btn-outline-secondary d-inline-flex align-items-center gap-1">
+                        <i class="bi bi-github"></i>
+                        GitHub
+                    </a>
+            </div>
+        </div>
+    </aside>
+    <div class="mt-5">
+        <a href="../../blog.html" class="btn btn-outline-secondary">
+            &larr; Voltar ao &#xED;nicio
+        </a>
+    </div>
+</section>
+
+
+
+
+    <footer class="footer bg-dark">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-5 col-md-12 mb-4 pb-2">
+                    <a class="footer-logo" href="#">
+                    <img src="../../../images/logo_jj-consulting-hv-adj.png" alt="JJ Consulting" loading="lazy" />
+                    </a>
+                    <ul class="list-unstyled social-icon social mx-auto mt-4">
+                        <li class="list-inline-item">
+                            <a href="http://fb.com/jjconsulting.com.br" target="_blank">
+                                <i class="bi bi-facebook" title="Facebook"></i>
+                            </a>
+                        </li>
+                        <li class="list-inline-item">
+                            <a href="https://www.linkedin.com/company/jjconsultingbr" target="_blank">
+                                <i class="bi bi-linkedin" title="Linkedin"></i>
+                            </a>
+                        </li>
+                        <li class="list-inline-item">
+                            <a href="https://instagram.com/jjconsulting.com.br/" target="_blank">
+                                <i class="bi bi-instagram" title="Instagram"></i>
+                            </a>
+                        </li>
+                        <li class="list-inline-item">
+                            <a href="https://api.whatsapp.com/send?phone=551138575322&amp;text=Ol%C3%A1%2C%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es%20sobre%20os%20servi%C3%A7os%20da%20JJ%20Consulting." target="_blank">
+                                <i class="bi bi-whatsapp" title="Fale Conosco via WhatsApp"></i>
+                            </a>
+                        </li>
+                        <li class="list-inline-item">
+                            <a href="mailto:info@jjconsulting.com.br">
+                                <i class="bi bi-envelope" title="E-mail"></i>
+                            </a>
+                        </li>
+                        <li class="list-inline-item">
+                            <a href="tel:+551138575322">
+                                <i class="bi bi-telephone" title="Telefone"></i>
+                            </a>
+                        </li>
+                    </ul><!--end icon-->
+                </div><!--end col-->
+
+                <div class="col-lg-3 col-md-3 mb-4 pb-2">
+                    <h7 class="text-light text-uppercase footer-head">Mapa do Site</h7>
+                    <ul class="list-unstyled footer-list mt-4">
+                        <li class="mt-2"><a href="../../../pt-br.html" class="text-foot"><i class="bi bi-chevron-right me-2"></i> In&#xED;cio</a></li>
+                        <li class="mt-2"><a href="../../products.html" class="text-foot"><i class="bi bi-chevron-right me-2"></i> Produtos</a></li>
+                        <li class="mt-2"><a href="../../../pt-br.html#solucoes" class="text-foot"><i class="bi bi-chevron-right me-2"></i> Solu&#xE7;&#xF5;es</a></li>
+                        <li class="mt-2"><a href="../../../pt-br.html#clientes" class="text-foot"><i class="bi bi-chevron-right me-2"></i> Clientes</a></li>
+                        <li class="mt-2"><a href="../../contact.html" class="text-foot"><i class="bi bi-chevron-right me-2"></i> Contato</a></li>
+                        <li class="mt-2"><a class="text-foot" href="../../jobs.html" target="_blank"><i class="bi bi-chevron-right me-2"></i> Fa&#xE7;a Parte</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-lg-4 col-md-8 mb-4 pb-2">
+                    <h7 class="text-light text-uppercase footer-head">Onde nos encontrar</h7>
+                    <div class="list-unstyled text-foot mt-4 mb-0">
+                        <div class="footer-end">
+                            <a href="#" target="_blank">
+                                <i class="bi bi-geo-alt"></i> R. Aníbal Benevolo, 94 - São Paulo
+                            </a>
+                            <br>
+                            <a href="mailto:info@jjconsulting.com.br">
+                                <i class="bi bi-envelope"></i> info@jjconsulting.com.br
+                            </a>
+                            <br>
+                            <a href="tel:+551138575322" target="_blank">
+                                <i class="bi bi-telephone"></i> (11) 3857-5322
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div><!--end row-->
+        </div><!--end container-->
+        <hr>
+        <div class="footer-bar">
+            <div class="container text-foot text-center">
+                <div class="row align-items-center">
+                    <div class="col-sm-12">
+                        <div class="text-sm-center">
+                            <p class="mb-0">© 2006 ~ 2025 JJ Consulting<br />Todos os direitos reservados.</p>
+                        </div>
+                    </div><!--end col-->
+                </div><!--end row-->
+            </div><!--end container-->
+        </div><!--end container-->
+        <!-- Chat WhatsApp -->
+        <div id="btnFlutuante" class="floating-btn animate__animated animate__bounce animate__fast animate__delay-2s animate__repeat-3">
+            <div class="icon">
+                <i class="bi bi-whatsapp"></i>
+            </div>
+            <span>(11) 3857-5322</span>
+        </div>
+    </footer>
+
+
+
+<script src="../../../js/aos.min.js"></script>
+<script src="../../../js/jquery/dist/jquery.min.js"></script>
+<script src="../../../js/bootstrap.bundle.min.js"></script>
+<script src="../../../js/bootstrap-select.min.js"></script>
+
+<script src="../../../js/morphext.min.js"></script> 
+
+<script src="../../../js/appc395.js?v=X8IOXcn2aHmfuC4d4xkTpggtRFrZ-U8zSfB7-Tbidno"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        AOS.init({
+            duration: 1000,
+            once: false,
+            offset: 200,
+        });
+    });
+</script>
+
+
+    <script src="../../../_content/JJConsulting.Tech.Blog/js/highlight.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const tocList = document.getElementById('toc-list')
+            const tocWrapper = document.querySelector('.toc-wrapper')
+            const mainContent = document.getElementById('mainContent')
+            const navCol = tocWrapper.closest('nav')
+            const h2s = document.querySelectorAll('.article-content h2')
+
+            if (h2s.length <= 1) {
+                tocWrapper.style.display = 'none'
+                if (navCol) {
+                    navCol.classList.add('d-none')
+                    mainContent.classList.remove('col-md-9')
+                    mainContent.classList.add('col-sm-12')
+                }
+                return
+            }
+
+            h2s.forEach((h2, index) => {
+                const id = h2.id || `section-${index}`
+                h2.id = id
+                const link = document.createElement('a')
+                link.href = `#${id}`
+                link.className = 'list-group-item list-group-item-action'
+                link.textContent = h2.textContent
+                tocList.appendChild(link)
+            })
+
+            hljs.highlightAll();
+            
+            new bootstrap.ScrollSpy(document.body, {
+                target: '#toc-list'
+            });
+        })
+
+    </script>
+
+</body>
+
+<!-- Mirrored from www.jjconsulting.com.br/pt-br/blog/programacao/yarp-banco-de-dados by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 10 Jul 2025 14:47:39 GMT -->
+</html>

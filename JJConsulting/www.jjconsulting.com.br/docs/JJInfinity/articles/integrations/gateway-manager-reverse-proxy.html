@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html>
+  
+<!-- Mirrored from www.jjconsulting.com.br/docs/JJInfinity/articles/integrations/gateway-manager-reverse-proxy.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 10 Jul 2025 14:49:35 GMT -->
+<head>
+    <meta charset="utf-8">
+      <title>Aplica&#231;&#245;es </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Aplica&#231;&#245;es ">
+      
+      
+      <link rel="icon" href="../../favicon.ico">
+      <link rel="stylesheet" href="../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../public/main.css">
+      <meta name="docfx:navrel" content="../../toc.html">
+      <meta name="docfx:tocrel" content="../toc.html">
+      
+      <meta name="docfx:rel" content="../../">
+      
+      
+      
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-60L9XB7X4J"></script>
+      <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-60L9XB7X4J');
+      </script>
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../index-2.html">
+            <img id="logo" class="svg" src="../../logo.png" alt="JJInfinity">
+            JJInfinity
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="aplicações">Aplicações</h1>
+
+<p>São serviços independentes que se comunicam com o Infinity por meio de um proxy reverso utilizando
+o <a href="https://github.com/dotnet/yarp">YARP</a> (Yet Another Reverse Proxy).<br>
+Isso permite que sejam executadas de forma isolada, garantindo flexibilidade e escalabilidade, ao mesmo tempo que mantém
+a integração transparente para os usuários.</p>
+<h2 id="configurando-uma-aplicação">Configurando uma aplicação</h2>
+<ol>
+<li><p>Crie sua aplicação no IIS, ela pode ser configurada no próprio localhost já que será protegida pelo proxy reverso.</p>
+</li>
+<li><p>Configure o JJInfinity e sua aplicação para ser possível autenticação via JWT, como no exemplo abaixo:</p>
+<p><strong>JJInfinity no arquivo <code>appsettings.json</code></strong>:</p>
+<pre><code class="lang-json">{
+  &quot;TokenOptions&quot;: {
+    &quot;SecretKey&quot;: &quot;this is my custom Secret key for authentication&quot;,
+    &quot;ExpirationTimeSpan&quot;: &quot;12:00:00&quot;
+  }
+}
+</code></pre>
+<p><strong>Sua aplicação (exemplo em ASP.NET Core)</strong>:</p>
+<pre><code class="lang-csharp">var key = Encoding.ASCII.GetBytes(&quot;this is my custom Secret key for authentication&quot;); //Recupere do appsettings.json de sua aplicação por exemplo.
+
+builder.Services.Configure&lt;ForwardedHeadersOptions&gt;(options =&gt;
+{
+options.ForwardedHeaders =
+ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto | ForwardedHeaders.XForwardedPrefix;
+});
+
+builder.Services
+    .AddAuthentication(options =&gt; options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(x =&gt;
+    {
+        x.TokenValidationParameters = new TokenValidationParameters
+        {
+            IssuerSigningKey = new SymmetricSecurityKey(key),
+            ValidateIssuer = false,
+            ValidateAudience = false
+        };
+    });
+
+app.UseForwardedHeaders();
+app.UseAuthentication();
+app.UseAuthorization();
+</code></pre>
+</li>
+<li><p>Configure no JJInfinity a configuração de acesso em <strong>Menu do Admin → Aplicações</strong><br>
+<img src="../../images/LicAppConfig.png" alt="Configuração App"></p>
+</li>
+<li><p>Adicione no menu sua aplicação via <strong>URL Externa</strong>. Neste caso, <code>/Lic/Home</code> retornará esta página, por exemplo:<br>
+<img src="../../images/ExampleAppLic.png" alt="Configuração App"></p>
+</li>
+</ol>
+<h2 id="menu-dinâmico">Menu Dinâmico</h2>
+<p>É possível retornar um menu dinâmico de sua aplicação.</p>
+<h3 id="especificação-da-api">Especificação da API</h3>
+<p><strong>Endpoint</strong>: <code>GET /Infinity/Menu</code>
+<strong>Content-Type</strong>: <code>application/json</code></p>
+<h3 id="descrição">Descrição</h3>
+<p>Este endpoint deve retornar a estrutura completa de menu da aplicação. A resposta será um JSON contendo uma lista de
+itens, onde cada item pode ser de dois tipos:</p>
+<ul>
+<li><code>url</code>: representa um item de menu com um link direto.</li>
+<li><code>folder</code>: representa uma pasta que pode conter outros itens de menu, sejam eles <code>url</code> ou <code>folder</code>.</li>
+</ul>
+<p>A estrutura é hierárquica e pode conter múltiplos níveis de profundidade no caso das pastas aninhadas.</p>
+<p>Abaixo, um exemplo do JSON esperado na resposta:</p>
+<pre><code class="lang-json">[
+   {
+      &quot;type&quot;: &quot;url&quot;,
+      &quot;url&quot;: &quot;/&quot;,
+      &quot;slug&quot;: &quot;home&quot;,
+      &quot;id&quot;: &quot;00000000-0000-0000-0000-000000000001&quot;,
+      &quot;name&quot;: &quot;Home&quot;,
+      &quot;icon&quot;: 1,
+      &quot;order&quot;: 0,
+      &quot;newUntil&quot;: &quot;2025-06-01T14:35:51.1467999Z&quot;
+   },
+   {
+      &quot;type&quot;: &quot;folder&quot;,
+      &quot;children&quot;: [
+         {
+            &quot;type&quot;: &quot;url&quot;,
+            &quot;url&quot;: &quot;/Home/Privacy&quot;,
+            &quot;slug&quot;: &quot;privacy&quot;,
+            &quot;id&quot;: &quot;00000000-0000-0000-0000-000000000003&quot;,
+            &quot;name&quot;: &quot;Privacidade&quot;,
+            &quot;icon&quot;: 3,
+            &quot;order&quot;: 0,
+            &quot;newUntil&quot;: &quot;2025-06-01T14:35:51.1468257Z&quot;
+         }
+      ],
+      &quot;isGrouper&quot;: false,
+      &quot;expandedByDefault&quot;: true,
+      &quot;slug&quot;: &quot;recursos&quot;,
+      &quot;id&quot;: &quot;00000000-0000-0000-0000-000000000002&quot;,
+      &quot;name&quot;: &quot;Recursos&quot;,
+      &quot;icon&quot;: 2,
+      &quot;order&quot;: 1,
+      &quot;newUntil&quot;: &quot;2025-06-01T14:35:51.1468023Z&quot;
+   }
+]
+</code></pre>
+<h3 id="observações">Observações</h3>
+<ul>
+<li>A propriedade <code>&quot;type&quot;</code> define qual classe ou estrutura deverá ser usada na leitura do item. Ou seja, &quot;url&quot; ou &quot;folder&quot;.</li>
+<li>A propriedade <code>&quot;children&quot;</code> está presente apenas quando o item é do tipo <code>folder</code>.</li>
+<li>O endpoint deve estar preparado para retornar esse JSON de forma dinâmica conforme a configuração do menu no sistema.</li>
+<li>A deve ser sempre uma URL relativa, ela será prefixada com a URL do Proxy em tempo de execução.</li>
+</ul>
+<hr>
+<h2 id="estrutura-de-dados-em-c-exemplo">Estrutura de dados em C# (exemplo)</h2>
+<p>Abaixo um exemplo de como representar essa estrutura em C# utilizando <code>System.Text.Json</code> com suporte a desserialização
+polimórfica. Qualquer outra linguagem também pode ser usada, desde que respeite o mesmo formato de JSON:</p>
+<h3 id="models">Models</h3>
+<pre><code class="lang-csharp">using System.Text.Json.Serialization;
+
+[JsonPolymorphic(TypeDiscriminatorPropertyName = &quot;type&quot;)]
+[JsonDerivedType(typeof(UrlMenuItem), &quot;url&quot;)]
+[JsonDerivedType(typeof(FolderMenuItem), &quot;folder&quot;)]
+public abstract class MenuItem
+{
+    [JsonPropertyName(&quot;id&quot;)]
+    public Guid Id { get; set; }
+
+    [JsonPropertyName(&quot;name&quot;)]
+    public required string Name { get; set; }
+
+    [JsonPropertyName(&quot;icon&quot;)]
+    public int Icon { get; set; }
+
+    [JsonPropertyName(&quot;order&quot;)]
+    public int Order { get; set; }
+
+    [JsonPropertyName(&quot;newUntil&quot;)]
+    public DateTime? NewUntil { get; set; }
+    
+    public List&lt;string&gt; Roles { get; set; } = [];
+}
+
+public class UrlMenuItem : MenuItem
+{
+    [JsonPropertyName(&quot;url&quot;)]
+    public required string Url { get; set; }
+
+    [JsonPropertyName(&quot;slug&quot;)]
+    public required string Slug { get; set; }
+    
+    [JsonPropertyName(&quot;isRedirect&quot;)]
+    public bool IsRedirect { get; set; }
+}
+
+public class FolderMenuItem : MenuItem
+{
+    [JsonPropertyName(&quot;children&quot;)]
+    public List&lt;MenuItem&gt; Children { get; set; }
+
+    [JsonPropertyName(&quot;isGrouper&quot;)]
+    public bool IsGrouper { get; set; }
+
+    [JsonPropertyName(&quot;openAsPage&quot;)]
+    public bool OpenAsPage { get; set; }
+    
+    [JsonPropertyName(&quot;expandedByDefault&quot;)]
+    public bool ExpandedByDefault { get; set; }
+}
+</code></pre>
+<h3 id="endpoint">Endpoint</h3>
+<pre><code class="lang-cs">using ExampleApp.Web.Models;
+using Microsoft.AspNetCore.Mvc;
+
+namespace ExampleApp.Web.Controllers;
+
+[ApiController]
+public class InfinityMenuController : ControllerBase
+{
+    [HttpGet(&quot;/Infinity/Menu&quot;)]
+    public JsonResult GetMenu()
+    {
+        var homeItemId = Guid.Parse(&quot;00000000-0000-0000-0000-000000000001&quot;);
+        var folderId = Guid.Parse(&quot;00000000-0000-0000-0000-000000000002&quot;);
+        var privacyItemId = Guid.Parse(&quot;00000000-0000-0000-0000-000000000003&quot;);
+
+        List&lt;MenuItem&gt; items =
+        [
+            new UrlMenuItem
+            {
+                Slug = &quot;home&quot;,
+                Url = Url.Action(&quot;Index&quot;, &quot;Home&quot;)!,
+                Id = homeItemId,
+                Name = &quot;Home&quot;,
+                Icon = 1,
+                Order = 0
+            },
+            new FolderMenuItem
+            {
+                Id = folderId,
+                Name = &quot;Recursos&quot;,
+                Icon = 2,
+                Order = 1,
+                IsGrouper = false,
+                ExpandedByDefault = true,
+                Children =
+                [
+                    new UrlMenuItem
+                    {
+                        Slug = &quot;privacy&quot;,
+                        Url = Url.Action(&quot;Privacy&quot;, &quot;Home&quot;)!,
+                        Id = privacyItemId,
+                        Name = &quot;Privacidade&quot;,
+                        Icon = 3,
+                        Order = 0,
+                        Roles = [&quot;Admin&quot;]
+                    }
+                ]
+            }
+        ];
+        return new JsonResult(items);
+    }
+}
+</code></pre>
+<p>Você pode adaptar essa estrutura a qualquer outra linguagem com suporte a herança e (de preferência) desserialização
+baseada em discriminador de tipo (<code>type</code>).
+O importante é garantir que o JSON siga exatamente o formato especificado para ser corretamente interpretado.
+Em seu endpoint, retorne uma <code>List&lt;MenuItem&gt;</code>, caso retorne uma <code>List&lt;FolderMenuItem&gt;</code> ou <code>List&lt;UrlMenuItem&gt;</code> não será gerada a propriedade <code>type</code> causando erro na desserialização do JSON.</p>
+<div class="CAUTION">
+<h5>Caution</h5>
+<p>A URL <code>/Infinity/Menu</code> não requer autenticação, pois a requisição será realizada internamente pelo JJInfinity, e não
+diretamente pelo navegador do usuário. Ainda assim, é fundamental que o site esteja hospedado em ambiente local (
+localhost) ou na intranet, garantindo que essa rota não fique exposta ao público externo. Também é possível validar o JWT que enviamos caso ainda deseje hospedar fora de sua rede.</p>
+</div>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Version - 4.0.x
+        </div>
+      </div>
+    </footer>
+  </body>
+
+<!-- Mirrored from www.jjconsulting.com.br/docs/JJInfinity/articles/integrations/gateway-manager-reverse-proxy.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 10 Jul 2025 14:49:36 GMT -->
+</html>

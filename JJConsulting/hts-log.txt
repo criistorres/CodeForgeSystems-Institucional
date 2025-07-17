@@ -1,0 +1,20 @@
+HTTrack3.49-2+htsswf+htsjava launched on Thu, 10 Jul 2025 11:41:57 at https://www.jjconsulting.com.br/pt-br +*.png +*.gif +*.jpg +*.jpeg +*.css +*.js -ad.doubleclick.net/* -mime:application/foobar
+(winhttrack -qwC2%Ps2u1%s%uN0%I0p3DaK0H0%kf2A25000%f#f -F "Mozilla/4.5 (compatible; HTTrack 3.0x; Windows 98)" -%F "<!-- Mirrored from %s%s by HTTrack Website Copier/3.x [XR&CO'2014], %s -->" -%l "pt_BR, en, *" https://www.jjconsulting.com.br/pt-br -O1 "C:\Meus Sites\JJConsulting" +*.png +*.gif +*.jpg +*.jpeg +*.css +*.js -ad.doubleclick.net/* -mime:application/foobar )
+
+Information, Warnings and Errors reported for this mirror:
+note:	the hts-log.txt file, and hts-cache folder, may contain sensitive information,
+	such as username/password authentication for websites mirrored in this project
+	do not share these files/folders if you want these information to remain private
+
+11:43:37	Warning: 	Found for https://www.jjconsulting.com.br/
+11:43:37	Warning: 	File has moved from https://www.jjconsulting.com.br/ to /pt-br
+11:43:37	Error: 	"Not Found" (404) at link https://www.jjconsulting.com.br/css/img/bg-img/bg-2.jpg (from https://www.jjconsulting.com.br/css/style.css?v=3)
+11:43:37	Error: 	"Not Found" (404) at link https://www.jjconsulting.com.br/css/img/jj-bg.png (from https://www.jjconsulting.com.br/css/style.css?v=3)
+11:47:41	Error: 	"Error when decompressing" (-1) at link https://www.jjconsulting.com.br/pt-br/blog/gestão/gestão-com-magia-como-adaptamos-o-scrum-ao-nosso mundo real (from https://www.jjconsulting.com.br/pt-br/blog)
+11:47:48	Warning: 	file not stored in cache due to bogus state (incomplete type with OK (200), size 0): https://www.jjconsulting.com.br/docs/jjintegration/public/main.css
+11:47:50	Error: 	"Not Found" (404) at link https://www.jjconsulting.com.br/images/LoadingIndicator.gif (from https://www.jjconsulting.com.br/infinity/css/infinity.css?v=oDiDQt86pLegRyZDSsz3uXBD2IdD9twCzTpQzuF_1I0)
+11:48:22	Error: 	"Not Found" (404) at link https://www.jjconsulting.com.br/infinity/Error/Index?statusCode=404 (from https://www.jjconsulting.com.br/infinity/css/app-theme.css?v=25b18420-95af-499b-b387-5e04f3e5e181)
+11:48:23	Warning: 	file not stored in cache due to bogus state (incomplete type with OK (200), size 0): https://www.jjconsulting.com.br/docs/JJInfinity/public/main.css
+
+HTTrack Website Copier/3.49-2 mirror complete in 7 minutes 54 seconds : 1028 links scanned, 1021 files written (58652240 bytes overall) [53527580 bytes received at 112927 bytes/sec], 8147628 bytes transferred using HTTP compression in 652 files, ratio 31%, 1.0 requests per connection
+(5 errors, 4 warnings, 0 messages)

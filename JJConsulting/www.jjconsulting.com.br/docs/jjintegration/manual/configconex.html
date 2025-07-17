@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html>
+  
+<!-- Mirrored from www.jjconsulting.com.br/docs/jjintegration/manual/configconex.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 10 Jul 2025 14:48:56 GMT -->
+<head>
+    <meta charset="utf-8">
+      <title>Conex&#245;es | JJIntegration </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Conex&#245;es | JJIntegration ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      
+      
+      
+      <meta name="docfx:docurl" content="https://gitlab.jjconsulting.com.br/jjconsulting/jjintegration/blob/master/docs/manual/configconex.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index-2.html">
+            <img id="logo" class="svg" src="../logo.png" alt="JJIntegration - Manual">
+            JJIntegration - Manual
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="conexões">Conexões</h1>
+
+<p>Conexões é uma função onde pode-se incluir, alterar, excluir conexões cadastradas no sistema, atualizar a lista de conexões e exibir suas dependências.</p>
+<p>Esta seção pode ser acessada pelo menu lateral ou menu de utilidades &gt; Ferramentas &gt; Conexões.</p>
+<p><strong>Conexôes</strong> se referem às ligações estabelecidas entre diferentes sistemas ou componentes para permitir a troca de informações e realizar operações conjuntas.
+Uma conexão pode ser estabelecida de várias formas, dependendo dos sistemas envolvidos e do tipo de integração desejada. Exemplo: Banco de Dados, Rede e vários outros tipos.</p>
+<br>
+<div align="center">
+<p><img src="../images/img128.png" alt="img04"></p>
+</div>
+<br>
+<h3 id="configurar-conexoes-conexões"><img src="../images/icon16.bmp" alt="configurar conexoes"> <strong>Conexões</strong></h3>
+<ul>
+<li>Ao selecionar esta opção o sistema exibe uma tela onde é possível incluir, alterar, excluir, atualizar conexões e exibir depedências.</li>
+</ul>
+<br>
+<div align="center">
+<p><img src="../images/img106.png" alt="tela"></p>
+</div>
+<br>
+<p>Ao selecionar o botão &quot;<strong>Incluir</strong>&quot; <img src="../images/icon02.bmp" alt="configurar conec"> o sistema exibe uma lista para que seja escolhido o tipo de conexão desejada. Cada conexão possui um tipo de configuração diferente sendo necessário que seja escolhido o tipo de conexão correto para o resultado desejado.</p>
+<br>
+<div align="center">
+<p><img src="../images/img107.png" alt="incluir"></p>
+</div>
+<br>
+<ul>
+<li>Selecione a opção &quot;<strong>Banco de Dados</strong>&quot; para configurar um Banco de Dados. Ao selecionar o sistema irá exibir uma tela para cadastro, preencha o nome, selecione o tipo de banco e preencha a string de conexão, após preencher os dados necessários selecione o botão &quot;Testar&quot; para verificar se a conexão está correta e em seguida selecione o botão &quot;Ok&quot; para finalizar e salvar a nova conexão.</li>
+</ul>
+<br>
+<div align="center">
+<p><img src="../images/img108.bmp" alt="bd"></p>
+</div>
+<br>
+<ul>
+<li>Selecione a opção &quot;<strong>E-mail (Caixa de Entrada)</strong>&quot; para configurar um E-mail. Ao selecionar o sistema irá exibir uma tela para cadastro, preencha o nome, e configure a caixa de entrada, após preencher os dados necessários selecione o botão &quot;Testar&quot; para verificar se a conexão está correta e em seguida selecione o botão &quot;Ok&quot; para finalizar e salvar a nova conexão.</li>
+</ul>
+<br>
+<div align="center">
+<p><img src="../images/img109.bmp" alt="caixa de entrada"></p>
+</div>
+<br>
+<ul>
+<li>Selecione a opção &quot;<strong>E-mail (Caixa de Saída)</strong>&quot; para configurar um E-mail SMTP. Ao selecionar o sistema irá exibir uma tela para cadastro, preencha o nome, e configure o envio de E-mail, após preencher os dados necessários selecione o botão &quot;Testar&quot; para verificar se a conexão está correta e em seguida selecione o botão &quot;Ok&quot; para finalizar e salvar a nova conexão.</li>
+</ul>
+<br>
+<div align="center">
+<p><img src="../images/img110.bmp" alt="caixa"></p>
+</div>
+<br>
+<p>Além disso, uma tela aparece solicitando a inserção de um e-mail para receber uma mensagem como parte do teste.</p>
+<br>
+<div align="center">
+<p><img src="../images/img215.png" alt="caixa"></p>
+</div>
+<br>
+<ul>
+<li>Selecione a opção &quot;<strong>Diretorio</strong>&quot; para configurar um Diretório. Ao selecionar o sistema irá exibir uma tela para cadastro, preencha o nome, selecione o diretório desejado e se utilizará credenciais especificas ou não, após preencher os dados necessários selecione o botão &quot;Testar&quot; para verificar se a conexão está correta e em seguida selecione o botão &quot;Ok&quot; para finalizar e salvar a nova conexão.</li>
+</ul>
+<br>
+<div align="center">
+<p><img src="../images/img111.bmp" alt="diretorio1"></p>
+</div>
+<br>
+<ul>
+<li>Selecione a opção &quot;<strong>FTP</strong>&quot; para configurar uma FTP. Ao selecionar o sistema irá exibir uma tela para cadastro, preencha o nome, e configure o FTP, após preencher os dados necessários selecione o botão &quot;Testar&quot; para verificar se a conexão está correta e em seguida selecione o botão &quot;Ok&quot; para finalizar e salvar a nova conexão.</li>
+</ul>
+<br>
+<div align="center">
+<p><img src="../images/img112.bmp" alt="ftp"></p>
+</div>
+<br>
+<ul>
+<li>Selecione a opção &quot;<strong>URL Post</strong>&quot; para configurar um Web Post. Ao selecionar o sistema irá exibir uma tela para cadastro, preencha o nome, url do post e timeout, também é necessário ir preencher a autorização caso haja alguma, o cabeçalho e conteúdo. Após preencher os dados necessários selecione o botão &quot;Ok&quot; para finalizar e salvar a nova conexão.</li>
+</ul>
+<br>
+<div align="center">
+<p><img src="../images/img113.png" alt="url post"></p>
+</div>
+<br>
+<ul>
+<li>Selecione a opção &quot;<strong>MS OLAP</strong>&quot; para incluir uma conexão com Analysis Service. Ao selecionar o sistema irá exibir uma tela para cadastro, preencha o nome, tipo de autenticação e configure o host da conexão, após preencher os dados necessários selecione o botão &quot;Testar&quot; para verificar se a conexão está correta e em seguida selecione o botão &quot;Ok&quot; para finalizar e salvar a nova conexão.</li>
+</ul>
+<br>
+<div align="center">
+<p><img src="../images/img114.bmp" alt="ms olap"></p>
+</div>
+<br>
+<ul>
+<li>Selecione a opção &quot;<strong>EWS OAuth</strong>&quot; para configurar o método de autenticação. Ao selecionar o sistema irá exibir uma tela de preenchimento, insira o nome a configuração e insira as informações necessárias nela.</li>
+</ul>
+<br>
+<div align="center">
+<p><img src="../images/img114.png" alt="EWS OAuth"></p>
+</div>
+<br>
+<p>Para <strong>Alterar</strong> <img src="../images/icon03.bmp" alt="icon03"> uma conexão, selecione a conexão desejada podendo ser de banco de dados, entrada de e-mail, saída de e-mail, diretório, FTP, URL Rost e MS OLAP. Cada conexão possui um cadastro onde deve-se escolher a conexão correta para que a alteração seja correta e traga o resultado esperado. Também é possível <strong>Duplicar</strong> conexão já criada, visando simplificar o processo e produtividade.</p>
+<ul>
+<li>Para alterar uma conexão com &quot;<strong>Banco de Dados</strong>&quot;, selecione a conexão desejada. Ao selecionar o sistema irá exibir uma tela para que seja realizada a alteração, altere os campos desejados e selecione o botão &quot;Testar&quot; para verificar se está correto e selecione o botão &quot;Ok&quot; para salvar e fechar a janela.</li>
+</ul>
+<br>
+<div align="center">
+<p><img src="../images/img220.png" alt="bd"></p>
+</div>
+<br>
+<ul>
+<li>Para alterar uma conexão com &quot;<strong>E-mail (Caixa de Entrada)</strong>&quot;, selecione a conexão desejada. Ao selecionar o sistema irá exibir uma tela para que seja realizada a alteração, altere os campos desejados e selecione o botão &quot;Testar&quot; para verificar se está correto e após selecione o botão &quot;Ok&quot; para salvar e fechar a janela.</li>
+</ul>
+<br>
+<div align="center">
+<p><img src="../images/img222.png" alt="caixa de entrada"></p>
+</div>
+<br>
+<ul>
+<li>Para alterar uma conexão com &quot;<strong>E-mail (Caixa de Saída)</strong>&quot;, selecione a conexão desejada. Ao selecionar o sistema irá exibir uma tela para que seja realizada a alteração, altere os campos desejados e selecione o botão &quot;Testar&quot; para verificar se está correto e após selecione o botão &quot;Ok&quot; para salvar e fechar a janela.</li>
+</ul>
+<br>
+<div align="center">
+<p><img src="../images/img221.png" alt="caixa de saida"></p>
+</div>
+<br>	
+<ul>
+<li>Para alterar uma conexão com &quot;<strong>Diretório</strong>&quot;, selecione a conexão desejada. Ao selecionar o sistema irá exibir uma tela para que seja realizada a alteração, altere os campos desejados e selecione o botão &quot;Testar&quot; para verificar se está correto e após selecione o botão &quot;Ok&quot; para salvar e fechar a janela.</li>
+</ul>
+<br>
+<div align="center">
+<p><img src="../images/img223.png" alt="diretorio03"></p>
+</div>
+<br>
+<ul>
+<li>Para alterar uma conexão com &quot;<strong>FTP</strong>&quot;, selecione a conexão desejada. Ao selecionar o sistema irá exibir uma tela para que seja realizada a alteração, altere os campos desejados e selecione o botão &quot;Testar&quot; para verificar se a conexão está correta e em seguida selecione o botão &quot;Ok&quot; para salvar e fechar a janela.</li>
+</ul>
+<br>
+<div align="center">
+<p><img src="../images/img224.png" alt="ftpalt"></p>
+</div>
+<br>
+<ul>
+<li>Para alterar uma conexão com &quot;<strong>URL Post</strong>&quot;, selecione a conexão desejada. Ao selecionar o sistema irá exibir uma tela para que seja realizada a alteração, altere os campos desejados e selecione o botão &quot;Ok&quot; para salvar e fechar a janela.</li>
+</ul>
+<br>
+<div align="center">
+<p><img src="../images/img225.png" alt="urlpostalt"></p>
+</div>
+<br>
+<ul>
+<li>Para alterar uma conexão com &quot;<strong>Analysis Services (MS OLAP)</strong>&quot;, selecione a conexão desejada. Ao selecionar o sistema irá exibir uma tela para que seja realizada a alteração, altere os campos desejados e selecione o botão &quot;Testar&quot; para verificar se está correto e após selecione o botão &quot;Ok&quot; para salvar e fechar a janela.</li>
+</ul>
+<br>
+<div align="center">
+<p><img src="../images/img226.png" alt="msolap03"></p>
+</div>
+<br>
+<ul>
+<li>Para alterar uma conexão com &quot;<strong>EWS OAuth</strong>&quot;, selecione a conexão desejada. Ao selecionar o sistema irá exibir uma tela de preenchimento, insira o nome a configuração e insira as informações necessárias nela.</li>
+</ul>
+<br>
+<div align="center">
+<p><img src="../images/img227.png" alt="EWS OAuth"></p>
+</div>
+<br>
+<p>Para excluir uma conexão selecione o arquivo desejado e após selecione o botão <strong>Excluir</strong> <img src="../images/icon04.bmp" alt="excluir">, após selecionar o sistema irá exibir uma mensagem de confirmação, selecione botão &quot;Ok&quot; para confirmar e excluir.</p>
+<br>
+<div align="center">
+<p><img src="../images/img115.png" alt="excluirconex"></p>
+</div>
+<br>
+<p>Para atualizar a lista de conexões selecione o botão <strong>Atualizar</strong> <img src="../images/icon08.bmp" alt="atualizar">, após selecionar o sistema irá atualizar a lista sendo possível dar continuidade nas atividades normalmente.</p>
+<p>Para exibir dependências da tarefa selecionada, selecione o botão <strong>Exibir Dependências</strong> <img src="../images/icon01.02.png" alt="dependências">, após selecionar o sistema irá exibir a lista de dependências da tarefa caso exista alguma.</p>
+<br>
+<div align="center">
+<p><img src="../images/img228.png" alt="exibirdep"></p>
+</div><br>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://gitlab.jjconsulting.com.br/jjconsulting/jjintegration/blob/master/docs/manual/configconex.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <div><span>JJIntegration - Cross Server Version</span></div>
+        </div>
+      </div>
+    </footer>
+  </body>
+
+<!-- Mirrored from www.jjconsulting.com.br/docs/jjintegration/manual/configconex.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 10 Jul 2025 14:49:03 GMT -->
+</html>

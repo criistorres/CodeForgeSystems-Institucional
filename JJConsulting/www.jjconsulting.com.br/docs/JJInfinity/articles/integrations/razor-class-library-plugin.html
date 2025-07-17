@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html>
+  
+<!-- Mirrored from www.jjconsulting.com.br/docs/JJInfinity/articles/integrations/razor-class-library-plugin.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 10 Jul 2025 14:49:35 GMT -->
+<head>
+    <meta charset="utf-8">
+      <title>Plugins </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Plugins ">
+      
+      
+      <link rel="icon" href="../../favicon.ico">
+      <link rel="stylesheet" href="../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../public/main.css">
+      <meta name="docfx:navrel" content="../../toc.html">
+      <meta name="docfx:tocrel" content="../toc.html">
+      
+      <meta name="docfx:rel" content="../../">
+      
+      
+      
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-60L9XB7X4J"></script>
+      <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-60L9XB7X4J');
+      </script>
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../index-2.html">
+            <img id="logo" class="svg" src="../../logo.png" alt="JJInfinity">
+            JJInfinity
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="plugins">Plugins</h1>
+
+<div class="CAUTION">
+<h5>Caution</h5>
+<p>Recomendamos a arquitetura de gateway em vez de plugins, pois é mais simples e escalável. Veja <a href="https://docs.jjconsulting.com.br/articles/integrations/gateway-manager-reverse-proxy">a documentação</a>.</p>
+</div>
+<h3 id="setup">Setup</h3>
+<ol>
+<li>Adicione um arquivo NuGet.config com o seguinte conteúdo na raiz de sua solution.</li>
+</ol>
+<pre><code class="lang-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;configuration&gt;
+&lt;packageSources&gt;
+   &lt;add key=&quot;GitLabJJ&quot; value=&quot;https://gitlab.jjconsulting.com.br/api/v4/groups/30/-/packages/nuget/index.json&quot; /&gt;
+   &lt;add key=&quot;nuget.org&quot; value=&quot;https://api.nuget.org/v3/index.json&quot; protocolVersion=&quot;3&quot; /&gt;
+&lt;/packageSources&gt;
+&lt;packageSourceCredentials&gt;
+    &lt;GitLabJJ&gt;
+       &lt;add key=&quot;Username&quot; value=&quot;jjconsulting&quot; /&gt;
+       &lt;add key=&quot;ClearTextPassword&quot; value=&quot;gldt-HgKek3e_hXgnbhnFygag&quot; /&gt;
+   &lt;/GitLabJJ&gt;
+&lt;/packageSourceCredentials&gt;
+&lt;/configuration&gt;
+</code></pre>
+<ol start="2">
+<li>Crie um site ASP.NET Core utilizando o .NET 9. Seu .csproj deve ser semelhante ao abaixo. <strong>Se atente as tag <code>EnableDynamicLoading</code> e na referência do <code>JJInfinity.PluginContracts</code> a tag <code>Private</code></strong></li>
+</ol>
+<pre><code class="lang-cs">&lt;Project Sdk=&quot;Microsoft.NET.Sdk.Web&quot;&gt;
+
+  &lt;PropertyGroup&gt;
+    &lt;TargetFramework&gt;net9.0&lt;/TargetFramework&gt;
+    &lt;Nullable&gt;enable&lt;/Nullable&gt;
+    &lt;ImplicitUsings&gt;enable&lt;/ImplicitUsings&gt;
+
+    &lt;!-- Se atente a essa tag --&gt;
+    &lt;EnableDynamicLoading&gt;true&lt;/EnableDynamicLoading&gt;
+  &lt;/PropertyGroup&gt;
+
+  &lt;ItemGroup&gt;
+    &lt;PackageReference  PrivateAssets=&quot;All&quot; Include=&quot;JJConsulting.Infinity.PluginContracts&quot; Version=&quot;2.0.0&quot; /&gt;
+  &lt;/ItemGroup&gt;
+  
+&lt;/Project&gt;
+
+</code></pre>
+<ol start="3">
+<li>Crie uma classe que implemente a interface <code>IInfinityPlugin</code>.</li>
+</ol>
+<pre><code class="lang-cs">public class LicenseWebServerPlugin : IInfinityWebPlugin
+{
+    public string Name =&gt; &quot;JJConsulting.License.WebServer&quot;;
+    
+    public string Description =&gt; &quot;Plugin para gerenciamento de licenças&quot;;
+    
+    /// Lista de items do menu disponíveis neste plugin.
+    public IEnumerable&lt;InfinityPluginMenuItem&gt; GetMenuItems()
+    {
+        yield return new InfinityPluginMenuItem
+        {
+            Title = &quot;Lista de Licenças&quot;,
+            Guid = Guid.Parse(&quot;7a8344da-d0bc-4fcf-a27f-7d4a84e3e7a3&quot;),
+            UrlFactory = urlHelper =&gt; urlHelper.Action(&quot;Index&quot;, &quot;License&quot;, new { Area=&quot;&quot; })
+        };
+    }
+    
+    /// Configure aqui os serviços da aplicação.
+    public void ConfigureServices(IServiceCollection services, IConfiguration configuration)
+    {
+        services.AddLicenseServices(configuration.GetSection(&quot;JJMasterData&quot;).GetValue&lt;string&gt;(&quot;ConnectionString&quot;)!);
+    }
+    
+    /// Configure aqui qualquer coisa que precise dos serviços da aplicação ou algum middleware se necessário.
+    public void ConfigureApp(WebApplication app)
+    {
+        using var scope = app.Services.CreateScope();
+        var services = scope.ServiceProvider;
+        try
+        {
+            LicenseSeed.Initialize(services);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($&quot;An error occurred seeding the database: {ex.Message}&quot;);
+        }
+    }
+}
+</code></pre>
+<div class="TIP">
+<h5>Tip</h5>
+<p>Caso precise de um plugin para a WebApi, utilize a classe InfinityWebApiPlugin</p>
+</div>
+<ol start="4">
+<li><p>Publique o plugin em modo <code>Release</code> e adicione ele a pasta de Plugins de seu servidor.</p>
+</li>
+<li><p>Adicione no arquivo <code>appsettings.json</code> a seguinte chave:</p>
+</li>
+</ol>
+<pre><code class="lang-csharp">  &quot;Plugins&quot;: [&quot;/home/gumbarros/Plugins/JJLicense/JJConsulting.License.dll&quot;],
+</code></pre>
+<ol start="6">
+<li><p>Reinicie o site</p>
+</li>
+<li><p>Acesse normalmente suas rotas do JJInfinity. Sua aplicação está integrada como se fizesse parte da aplicação.</p>
+</li>
+</ol>
+<div class="WARNING">
+<h5>Warning</h5>
+<p>Caso seu plugin não esteja carregado corretamente, se atente ao modelo de .csproj do passo 2.</p>
+</div>
+<div class="CAUTION">
+<h5>Caution</h5>
+<p>Não se esqueça de proteger suas rotas utilizando o atributo <code>[Authorize]</code>.</p>
+</div>
+<h2 id="utilizando-os-estilos-do-jjinfinity-no-seu-debug">Utilizando os estilos do JJInfinity no seu debug</h2>
+<ol>
+<li>Adicione o JJMasterData em seu .csproj:</li>
+</ol>
+<pre><code class="lang-csproj">&lt;ItemGroup&gt;
+        &lt;PackageReference Include=&quot;JJMasterData.Web&quot; Version=&quot;4.3.22&quot; PrivateAssets=&quot;all&quot;/&gt;
+&lt;ItemGroup/&gt;
+</code></pre>
+<ol start="2">
+<li>Adicione essa linha em seu <code>Program.cs</code></li>
+</ol>
+<pre><code class="lang-csharp">builder.Services.AddJJMasterDataWeb();
+</code></pre>
+<ol start="3">
+<li>Em seu appsettings.json, adicione a seguinte linha:</li>
+</ol>
+<pre><code class="lang-csharp">  &quot;JJMasterData&quot;: {
+    &quot;CustomBootstrapPath&quot;: &quot;https://jjconsulting.tech/infinity/css/theme.css&quot;,
+    &quot;ConnectionString&quot;: &quot;Data Source=177.154.144.67;Initial Catalog=BDINFINITY;user=infinity;password=JJInfinity@123#!full;Application Name=SiteDvs;Connect Timeout=240;Trust Server Certificate=True&quot;
+  },
+</code></pre>
+<p>Seu layout ficara da seguinte maneira:</p>
+<pre><code class="lang-html">@using Microsoft.AspNetCore.Mvc.TagHelpers
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;@System.Globalization.CultureInfo.CurrentCulture.Name&quot;
+      data-bs-theme=&quot;light&quot; data-bs-version=&quot;@BootstrapHelper.Version&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;utf-8&quot; /&gt;
+    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot; /&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot; /&gt;
+    &lt;title&gt;@(ViewData[&quot;Title&quot;] ?? &quot;Meu Plugin&quot;)&lt;/title&gt;
+    &lt;link rel=&quot;icon&quot; type=&quot;image/x-icon&quot; href=&quot;~/favicon.ico&quot;&gt;
+    &lt;partial name=&quot;_MasterDataStylesheets&quot;/&gt;
+    &lt;partial name=&quot;_MasterDataScripts&quot;/&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+&lt;div class=&quot;container-fluid p-4&quot;&gt;
+    @RenderBody()
+&lt;/div&gt;
+
+@await RenderSectionAsync(&quot;Scripts&quot;, required: false)
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Version - 4.0.x
+        </div>
+      </div>
+    </footer>
+  </body>
+
+<!-- Mirrored from www.jjconsulting.com.br/docs/JJInfinity/articles/integrations/razor-class-library-plugin.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 10 Jul 2025 14:49:35 GMT -->
+</html>

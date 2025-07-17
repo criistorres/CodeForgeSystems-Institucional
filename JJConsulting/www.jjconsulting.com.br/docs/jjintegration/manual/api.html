@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+  
+<!-- Mirrored from www.jjconsulting.com.br/docs/jjintegration/manual/api.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 10 Jul 2025 14:49:25 GMT -->
+<head>
+    <meta charset="utf-8">
+      <title>API | JJIntegration </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="API | JJIntegration ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      
+      
+      
+      <meta name="docfx:docurl" content="https://gitlab.jjconsulting.com.br/jjconsulting/jjintegration/blob/master/docs/manual/api.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index-2.html">
+            <img id="logo" class="svg" src="../logo.png" alt="JJIntegration - Manual">
+            JJIntegration - Manual
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="api">API</h1>
+
+<p>API é uma função onde pode-se incluir, alterar, excluir, atualizar e exibir dependências.</p>
+<p>Esta seção pode ser acessada pelo menu lateral em Tarefas.</p>
+<br>
+<div align="center">
+<p><img src="../images/img201.png" alt="api"></p>
+</div>
+<br>
+<h2 id="icone-api-api"><img src="../images/icon201.png" alt="icone api"> <strong>API</strong></h2>
+<ul>
+<li>Ao selecionar esta opção o sistema ira exibir uma tela onde poderá incluir, alterar, excluir, atualizar e exibir dependências.</li>
+</ul>
+<div align="center">
+<p><img src="../images/img202.png" alt="api2"></p>
+</div>
+<ul>
+<li><p>Para realizar um novo mapeamento da requisição selecione o botão <strong>Incluir</strong> <img src="../images/icon02.bmp" alt="Incluir">.</p>
+</li>
+<li><p>Ao selecionar o sistema irá exibir uma nova tela para configuração do arquivo de saída separada em três partes: Conexão, EndPoint e Eventos. Após preencher todos os dados necessários selecione o botão &quot;Ok&quot; para finalizar e salvar o novo mapeamento.</p>
+</li>
+<li><p>Na aba &quot;<strong>Conexão</strong>&quot; preencha a origem, inserindo o nome da requisição e objeto desejado.</p>
+</li>
+</ul>
+<br>
+<div align="center">
+<p><img src="../images/img203.png" alt="conexao api"></p>
+</div>
+<br>
+<ul>
+<li>Na aba &quot;<strong>Endpoint</strong>&quot; insira a conexão de destino com o JSON selecionado.</li>
+</ul>
+<br>
+<div align="center">
+<p><img src="../images/img204.png" alt="endpoint api"></p>
+</div>
+<br>
+<ul>
+<li>Na aba &quot;<strong>Eventos</strong>&quot; selecione o evento que deseja executar e preencha o campo Script com o script de banco de dados necessário para execução.</li>
+</ul>
+<br>
+<div align="center">
+<p><img src="../images/img205.png" alt="api eventos"></p>
+</div>
+<div class="TIP">
+<h5>Tip</h5>
+<p>Você poderá utilizar as seguintes variavéis:</p>
+<ul>
+<li>|responsecode| retorna o status da chamada da api</li>
+<li>|responsebody| corpo de resposta de uma chamada http</li>
+<li>Ou qualquer campo da query separados por pipe</li>
+</ul>
+</div>
+<br>
+<p>Selecione o botão <strong>Alterar</strong> <img src="../images/icon03.bmp" alt="alt import"> para editar um mapeamento de requisição. Ao selecionar o sistema irá exibir uma tela com detalhes onde terá três abas de configuração sendo elas: conexão, endpoint e eventos, ao finalizar as alterações selecione o botão &quot;Ok&quot; para salvar e alterar o mapeamento.</p>
+<ul>
+<li>Na aba &quot;<strong>Conexão</strong>&quot; altere a origem, inserindo o nome da requisição e objeto desejado.</li>
+</ul>
+<br>
+<div align="center">
+<p><img src="../images/img203.png" alt="conexao api"></p>
+</div>
+<br>
+<ul>
+<li>Na aba &quot;<strong>Endpoint</strong>&quot; altere a conexão de destino com o JSON selecionado.</li>
+</ul>
+<br>
+<div align="center">
+<p><img src="../images/img204.png" alt="endpoint api"></p>
+</div>
+<br>
+<ul>
+<li>Na aba &quot;<strong>Eventos</strong>&quot; altere o evento que deseja executar e preencha o campo Script com o script de banco de dados necessário para execução.</li>
+</ul>
+<br>
+<div align="center">
+<p><img src="../images/img205.png" alt="api eventos"></p>
+</div>
+<br>
+<p>Para excluir um arquivo selecione o arquivo desejado e após selecione o botão <strong>Excluir</strong> <img src="../images/icon04.bmp" alt="icone 04">, após selecionar o sistema irá exibir uma mensagem de confirmação, selecione botão &quot;Ok&quot; para confirmar e excluir.</p>
+<br>
+<div align="center">
+<p><img src="../images/img206.png" alt="api excluir"></p>
+</div>
+<br>
+<p>Para atualizar a lista de Arquivos selecione o botão <strong>Atualizar</strong> <img src="../images/icon08.bmp" alt="icone 08">, após selecionar o sistema irá atualizar a lista sendo possível dar continuidade nas atividades normalmente.</p>
+<p>Para exibir dependencias da tarefa selecionada, selecione o botão <strong>Exibir Dependências</strong> <img src="../images/icon01.02.png" alt="atualizar">, após selecionar o sistema irá exibir a lista de dependências da tarefa caso exista alguma.</p>
+<br>
+<div align="center">
+<p><img src="../images/img83.1.png" alt="exibirdep"></p>
+</div><br>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://gitlab.jjconsulting.com.br/jjconsulting/jjintegration/blob/master/docs/manual/api.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <div><span>JJIntegration - Cross Server Version</span></div>
+        </div>
+      </div>
+    </footer>
+  </body>
+
+<!-- Mirrored from www.jjconsulting.com.br/docs/jjintegration/manual/api.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 10 Jul 2025 14:49:27 GMT -->
+</html>
