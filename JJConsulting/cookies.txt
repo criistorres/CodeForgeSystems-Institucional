@@ -1,6 +1,0 @@
-# HTTrack Website Copier Cookie File
-# This file format is compatible with Netscape cookies
-www.jjconsulting.com.br	TRUE	/infinity	FALSE	1999999999	.JJInfinity.Chewbacca	CfDJ8IBeC4pqvUlDso_SDuaJHX3Jry8FuIvRRKUZK8ROVJyyvWkNikzGVvY7PEcCPLfcCoDoH4TN6faWi098XscEMQx7-4R82rTXf5QkOK3AOYxwnY5xhmeZ537C9JPcuru7RvcOkkvsalqBsqsZlbIg0Qs
-www.jjconsulting.com.br	TRUE	/infinity	FALSE	1999999999	samesite	lax
-www.jjconsulting.com.br	TRUE	/	FALSE	1999999999	samesite	lax
-
