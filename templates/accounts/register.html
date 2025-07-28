@@ -1,0 +1,158 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Registrar - {% endblock %}
+
+{% block content %}
+<section class="min-h-screen flex items-center justify-center py-20 bg-slate-900 relative overflow-hidden">
+    <!-- Background Pattern -->
+    <div class="absolute inset-0 opacity-10">
+        <div class="absolute top-1/4 left-1/4 w-64 h-64 bg-purple-500 rounded-full blur-3xl"></div>
+        <div class="absolute bottom-1/4 right-1/4 w-64 h-64 bg-green-500 rounded-full blur-3xl"></div>
+    </div>
+    
+    <div class="container mx-auto px-8 relative z-10">
+        <div class="max-w-2xl mx-auto">
+            <div class="auth-form p-8 rounded-2xl shadow-2xl">
+                <div class="text-center mb-8">
+                    <div class="flex items-center justify-center space-x-2 mb-4">
+                        <div class="w-10 h-10 bg-gradient-to-r from-purple-500 to-green-400 rounded-lg flex items-center justify-center">
+                            <span class="text-slate-900 font-bold text-sm">CF</span>
+                        </div>
+                        <span class="text-2xl font-bold gradient-text">CodeForge</span>
+                    </div>
+                    <h2 class="text-2xl font-bold text-white mb-2">Criar Conta</h2>
+                    <p class="text-slate-400">Registre-se para acessar nossos serviços</p>
+                </div>
+
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }} mb-6">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+
+                <form method="post" class="space-y-6">
+                    {% csrf_token %}
+                    
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <label for="{{ form.first_name.id_for_label }}" class="block text-sm font-medium text-slate-300 mb-2">
+                                Primeiro Nome *
+                            </label>
+                            {{ form.first_name }}
+                            {% if form.first_name.errors %}
+                                <div class="text-red-400 text-sm mt-1">
+                                    {{ form.first_name.errors.0 }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div>
+                            <label for="{{ form.last_name.id_for_label }}" class="block text-sm font-medium text-slate-300 mb-2">
+                                Sobrenome *
+                            </label>
+                            {{ form.last_name }}
+                            {% if form.last_name.errors %}
+                                <div class="text-red-400 text-sm mt-1">
+                                    {{ form.last_name.errors.0 }}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="{{ form.username.id_for_label }}" class="block text-sm font-medium text-slate-300 mb-2">
+                            Nome de usuário *
+                        </label>
+                        {{ form.username }}
+                        {% if form.username.errors %}
+                            <div class="text-red-400 text-sm mt-1">
+                                {{ form.username.errors.0 }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div>
+                        <label for="{{ form.email.id_for_label }}" class="block text-sm font-medium text-slate-300 mb-2">
+                            Email *
+                        </label>
+                        {{ form.email }}
+                        {% if form.email.errors %}
+                            <div class="text-red-400 text-sm mt-1">
+                                {{ form.email.errors.0 }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <label for="{{ form.telefone.id_for_label }}" class="block text-sm font-medium text-slate-300 mb-2">
+                                Telefone
+                            </label>
+                            {{ form.telefone }}
+                            {% if form.telefone.errors %}
+                                <div class="text-red-400 text-sm mt-1">
+                                    {{ form.telefone.errors.0 }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div>
+                            <label for="{{ form.cargo.id_for_label }}" class="block text-sm font-medium text-slate-300 mb-2">
+                                Cargo
+                            </label>
+                            {{ form.cargo }}
+                            {% if form.cargo.errors %}
+                                <div class="text-red-400 text-sm mt-1">
+                                    {{ form.cargo.errors.0 }}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <label for="{{ form.password1.id_for_label }}" class="block text-sm font-medium text-slate-300 mb-2">
+                                Senha *
+                            </label>
+                            {{ form.password1 }}
+                            {% if form.password1.errors %}
+                                <div class="text-red-400 text-sm mt-1">
+                                    {{ form.password1.errors.0 }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div>
+                            <label for="{{ form.password2.id_for_label }}" class="block text-sm font-medium text-slate-300 mb-2">
+                                Confirmar Senha *
+                            </label>
+                            {{ form.password2 }}
+                            {% if form.password2.errors %}
+                                <div class="text-red-400 text-sm mt-1">
+                                    {{ form.password2.errors.0 }}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-primary w-full px-6 py-3 rounded-lg font-semibold text-white">
+                        Criar Conta
+                    </button>
+                </form>
+
+                <div class="text-center mt-6">
+                    <p class="text-slate-400">
+                        Já tem uma conta? 
+                        <a href="{% url 'accounts:login' %}" class="text-purple-400 hover:text-purple-300 font-medium">
+                            Faça login aqui
+                        </a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
