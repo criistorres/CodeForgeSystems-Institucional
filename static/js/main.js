@@ -245,22 +245,53 @@ if (mobileMenuBtn && mobileMenu) {
     });
 }
 
-// Smooth Scroll para âncoras
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+// Smooth Scroll para âncoras (melhorado para links externos)
+document.querySelectorAll('a[href*="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-            target.scrollIntoView({
-                behavior: 'smooth',
-                block: 'start'
-            });
-            // Fechar menu mobile se estiver aberto
-            if (mobileMenu) {
-                mobileMenu.classList.add('hidden');
+        const href = this.getAttribute('href');
+        
+        // Se o link contém uma URL e uma âncora
+        if (href.includes('#')) {
+            const [url, hash] = href.split('#');
+            const currentPath = window.location.pathname;
+            
+            // Se estamos na mesma página ou o URL está vazio (âncora local)
+            if (!url || url === currentPath || url.endsWith(currentPath)) {
+                e.preventDefault();
+                const target = document.getElementById(hash);
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                    // Fechar menu mobile se estiver aberto
+                    if (mobileMenu) {
+                        mobileMenu.classList.add('hidden');
+                    }
+                }
             }
+            // Se for para outra página com âncora, deixa o navegador fazer o redirecionamento normal
+            // O smooth scroll será aplicado quando a nova página carregar
         }
     });
+});
+
+// Smooth scroll para âncora na URL quando a página carrega
+document.addEventListener('DOMContentLoaded', function() {
+    // Verifica se há uma âncora na URL
+    if (window.location.hash) {
+        const hash = window.location.hash.substring(1);
+        const target = document.getElementById(hash);
+        if (target) {
+            // Pequeno delay para garantir que a página carregou completamente
+            setTimeout(() => {
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }, 100);
+        }
+    }
 });
 
 // Intersection Observer para animações
@@ -343,4 +374,70 @@ document.addEventListener('DOMContentLoaded', function() {
             }, 300);
         }, 5000);
     });
+});
+
+// Highlight active page in navigation
+document.addEventListener('DOMContentLoaded', function() {
+    const currentPath = window.location.pathname;
+    const navLinks = document.querySelectorAll('.nav-link-enhanced');
+    
+    navLinks.forEach(link => {
+        const linkPath = new URL(link.href).pathname;
+        
+        // Remove active class from all links
+        link.classList.remove('nav-link-active');
+        
+        // Add active class to current page
+        if (linkPath === currentPath) {
+            link.classList.add('nav-link-active');
+        }
+        
+        // Special case for home page sections
+        if (currentPath === '/' && link.href.includes('#')) {
+            link.classList.add('nav-link-active');
+        }
+    });
+});
+
+// Access Modal Functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const accessBtn = document.getElementById('access-btn');
+    const accessModal = document.getElementById('access-modal');
+    const closeBtn = document.getElementById('close-access-modal');
+    const overlay = document.getElementById('access-overlay');
+    
+    if (accessBtn && accessModal) {
+        // Open modal
+        accessBtn.addEventListener('click', function() {
+            accessModal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        });
+        
+        // Close modal functions
+        function closeModal() {
+            accessModal.classList.add('hiding');
+            setTimeout(() => {
+                accessModal.classList.add('hidden');
+                accessModal.classList.remove('hiding');
+                document.body.style.overflow = '';
+            }, 200);
+        }
+        
+        // Close button
+        if (closeBtn) {
+            closeBtn.addEventListener('click', closeModal);
+        }
+        
+        // Overlay click
+        if (overlay) {
+            overlay.addEventListener('click', closeModal);
+        }
+        
+        // Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && !accessModal.classList.contains('hidden')) {
+                closeModal();
+            }
+        });
+    }
 });

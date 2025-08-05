@@ -119,7 +119,6 @@
     transform: translate(-50%, -50%);
     width: 120px;
     height: 120px;
-    bg-gradient-to-r from-purple-500 to-green-500;
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -535,5 +534,128 @@
     
     .client-card:hover {
         transform: translateY(-4px) scale(1.01);
+    }
+}
+
+/* Active page indicator */
+.nav-link-active {
+    background: linear-gradient(135deg, rgba(168, 85, 247, 0.2), rgba(6, 214, 160, 0.2));
+    border-radius: 0.5rem;
+}
+
+.nav-link-active::after {
+    width: calc(100% - 2rem);
+    opacity: 1;
+}
+
+/* Improved navbar organization */
+.navbar-section {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.navbar-divider {
+    width: 1px;
+    height: 20px;
+    background: rgba(255, 255, 255, 0.2);
+    margin: 0 1rem;
+}
+
+@media (max-width: 768px) {
+    .navbar-section {
+        flex-direction: column;
+        gap: 0.75rem;
+        align-items: stretch;
+    }
+    
+    .navbar-divider {
+        display: none;
+    }
+}
+
+/* Access Button Styles */
+.access-button {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    font-family: 'JetBrains Mono', monospace;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.access-button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+}
+
+.access-button:active {
+    transform: translateY(0);
+}
+
+/* Access Modal Styles */
+#access-modal {
+    animation: fadeIn 0.3s ease-out;
+}
+
+#access-modal .bg-slate-900 {
+    animation: slideUp 0.3s ease-out;
+    transform: translateY(0);
+}
+
+#access-modal.hiding {
+    animation: fadeOut 0.2s ease-in;
+}
+
+#access-modal.hiding .bg-slate-900 {
+    animation: slideDown 0.2s ease-in;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes fadeOut {
+    from { opacity: 1; }
+    to { opacity: 0; }
+}
+
+@keyframes slideUp {
+    from { 
+        opacity: 0;
+        transform: translateY(20px) scale(0.95);
+    }
+    to { 
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes slideDown {
+    from { 
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+    to { 
+        opacity: 0;
+        transform: translateY(20px) scale(0.95);
+    }
+}
+
+/* Responsive adjustments for access button */
+@media (max-width: 768px) {
+    .access-button {
+        font-size: 0.75rem;
+        padding: 0.5rem 0.75rem;
+    }
+    
+    #access-modal .max-w-md {
+        max-width: calc(100vw - 2rem);
+        margin: 1rem;
+    }
+}
+
+/* Ensure access button doesn't interfere with WhatsApp button */
+@media (max-width: 768px) {
+    .access-button {
+        bottom: 85px; /* Space for WhatsApp button */
     }
 }
