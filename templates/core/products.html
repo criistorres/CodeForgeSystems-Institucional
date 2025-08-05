@@ -1,0 +1,203 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Produtos - {% endblock %}
+
+{% block content %}
+    <!-- Hero Section -->
+    <section class="relative min-h-screen overflow-hidden">
+        <!-- Particles Background -->
+        <div id="particles-js"></div>
+        
+        <!-- Fundo Animado com Gradiente Líquido -->
+        <div class="absolute inset-0 liquid-gradient"></div>
+        <div class="absolute inset-0 liquid-gradient-alt opacity-70"></div>
+        
+        <!-- Conteúdo -->
+        <div class="relative z-10 min-h-screen flex items-center pt-20">
+            <div class="container mx-auto px-8">
+                <div class="max-w-4xl mx-auto text-center">
+                    <h1 class="text-5xl md:text-7xl font-bold text-white leading-tight mb-8">
+                        Nossos <span class="gradient-text">Produtos</span>
+                    </h1>
+                    <p class="text-xl md:text-2xl text-white/90 leading-relaxed mb-12">
+                        Soluções inovadoras desenvolvidas para otimizar seus processos 
+                        e impulsionar a transformação digital da sua empresa
+                    </p>
+                    
+                    <!-- Quick Stats -->
+                    <div class="grid grid-cols-2 md:grid-cols-3 gap-8 mt-16">
+                        <div class="text-center">
+                            <div class="text-4xl md:text-5xl font-bold text-white mb-2">{{ products.count }}+</div>
+                            <div class="text-white/70 font-medium">Produtos Ativos</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-4xl md:text-5xl font-bold text-white mb-2">100%</div>
+                            <div class="text-white/70 font-medium">Open Source</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-4xl md:text-5xl font-bold text-white mb-2">24/7</div>
+                            <div class="text-white/70 font-medium">Suporte Técnico</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Scroll Indicator -->
+        <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+            <div class="w-6 h-10 border-2 border-white/50 rounded-full flex justify-center">
+                <div class="w-1 h-3 bg-white/70 rounded-full mt-2 animate-pulse"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Products -->
+    {% if featured_products %}
+    <section class="py-24 bg-slate-900 relative overflow-hidden">
+        <!-- Background Pattern -->
+        <div class="absolute inset-0 opacity-10">
+            <div class="absolute top-1/4 left-1/4 w-64 h-64 bg-purple-500 rounded-full blur-3xl"></div>
+            <div class="absolute bottom-1/4 right-1/4 w-64 h-64 bg-green-500 rounded-full blur-3xl"></div>
+        </div>
+        
+        <div class="container mx-auto px-8 relative z-10">
+            <div class="text-center mb-20">
+                <h2 class="text-4xl md:text-5xl font-bold text-white mb-6">
+                    Produtos em <span class="gradient-text">Destaque</span>
+                </h2>
+                <p class="text-xl text-slate-300 max-w-3xl mx-auto leading-relaxed">
+                    Nossas soluções mais populares e inovadoras
+                </p>
+            </div>
+            
+            <div class="grid md:grid-cols-{{ featured_products.count }} gap-8">
+                {% for product in featured_products %}
+                <div class="product-card group bg-white/5 backdrop-blur-sm p-8 rounded-2xl border border-white/10 hover:border-purple-500/30 transition-all duration-500">
+                    <div class="flex flex-col h-full">
+                        <!-- Product Icon -->
+                        <div class="w-20 h-20 bg-gradient-to-br {{ product.image_gradient }} rounded-2xl flex items-center justify-center shadow-lg group-hover:shadow-purple-500/25 transition-all duration-300 mb-6">
+                            <span class="text-2xl font-bold text-white">{{ product.icon_text }}</span>
+                        </div>
+                        
+                        <!-- Product Header -->
+                        <div class="mb-6">
+                            <div class="flex items-center justify-between mb-3">
+                                <h3 class="text-2xl font-bold text-white">{{ product.name }}</h3>
+                                {% if product.is_opensource %}
+                                    <span class="bg-green-500/20 text-green-400 px-3 py-1 rounded-full text-sm font-medium">
+                                        Open Source
+                                    </span>
+                                {% endif %}
+                            </div>
+                            <p class="text-slate-400 text-sm mb-2">{{ product.technology_stack }}</p>
+                            <p class="text-slate-300 leading-relaxed">{{ product.short_description }}</p>
+                        </div>
+                        
+                        <!-- Features -->
+                        <div class="flex-1 mb-6">
+                            <h4 class="text-white font-semibold mb-3">Principais Recursos:</h4>
+                            <ul class="space-y-2">
+                                {% for feature in product.features|slice:":3" %}
+                                <li class="flex items-center text-slate-300 text-sm">
+                                    <svg class="w-4 h-4 text-green-400 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                    </svg>
+                                    {{ feature }}
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        
+                        <!-- Price and Actions -->
+                        <div class="flex items-center justify-between">
+                            <div class="text-lg font-bold text-white">{{ product.price_display }}</div>
+                            <a href="{{ product.get_absolute_url }}" class="bg-gradient-to-r from-purple-600 to-green-500 hover:from-purple-700 hover:to-green-600 px-6 py-2 rounded-lg font-semibold text-white text-sm transition-all duration-300 hover:scale-105">
+                                Ver Detalhes
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    {% endif %}
+
+    <!-- All Products -->
+    <section class="py-24 bg-slate-50">
+        <div class="container mx-auto px-8">
+            <div class="text-center mb-20">
+                <h2 class="text-4xl md:text-5xl font-bold text-slate-900 mb-6">
+                    Todos os <span class="bg-gradient-to-r from-purple-600 to-green-500 bg-clip-text text-transparent">Produtos</span>
+                </h2>
+                <p class="text-xl text-slate-600 max-w-3xl mx-auto leading-relaxed">
+                    Explore nossa linha completa de soluções tecnológicas
+                </p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {% for product in products %}
+                <div class="product-card-light group bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 hover:transform hover:scale-105">
+                    <div class="flex flex-col h-full">
+                        <!-- Product Icon -->
+                        <div class="w-16 h-16 bg-gradient-to-br {{ product.image_gradient }} rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-purple-500/25 transition-all duration-300 mb-6">
+                            <span class="text-xl font-bold text-white">{{ product.icon_text }}</span>
+                        </div>
+                        
+                        <!-- Product Header -->
+                        <div class="mb-4">
+                            <div class="flex items-center justify-between mb-2">
+                                <h3 class="text-xl font-bold text-slate-900">{{ product.name }}</h3>
+                                {% if product.is_opensource %}
+                                    <span class="bg-green-100 text-green-700 px-2 py-1 rounded-full text-xs font-medium">
+                                        Open Source
+                                    </span>
+                                {% endif %}
+                            </div>
+                            <p class="text-slate-500 text-sm mb-2">{{ product.technology_stack }}</p>
+                            <p class="text-slate-600 leading-relaxed text-sm">{{ product.short_description }}</p>
+                        </div>
+                        
+                        <!-- Price and Actions -->
+                        <div class="mt-auto pt-4 border-t border-slate-100">
+                            <div class="flex items-center justify-between">
+                                <div class="text-lg font-bold text-slate-900">{{ product.price_display }}</div>
+                                <a href="{{ product.get_absolute_url }}" class="bg-gradient-to-r from-purple-600 to-green-500 hover:from-purple-700 hover:to-green-600 px-4 py-2 rounded-lg font-semibold text-white text-sm transition-all duration-300 hover:scale-105">
+                                    Ver Mais
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="col-span-full text-center py-12">
+                    <div class="w-24 h-24 bg-gradient-to-r from-purple-500 to-green-400 rounded-full mx-auto mb-6 flex items-center justify-center">
+                        <svg class="w-12 h-12 text-white" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clip-rule="evenodd"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-slate-900 mb-4">Em Breve</h3>
+                    <p class="text-slate-600">Estamos desenvolvendo produtos incríveis. Volte em breve!</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-20 bg-gradient-to-r from-purple-600 to-green-500">
+        <div class="container mx-auto px-8 text-center">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4 text-white">
+                Precisa de uma solução personalizada?
+            </h2>
+            <p class="text-xl text-white opacity-90 mb-8 max-w-2xl mx-auto">
+                Entre em contato conosco e vamos desenvolver a solução perfeita 
+                para as necessidades específicas do seu negócio
+            </p>
+            <button class="bg-white text-purple-600 px-8 py-4 rounded-lg font-semibold hover:bg-gray-100 transition-all duration-300 hover:scale-105">
+                Solicitar Orçamento
+            </button>
+        </div>
+    </section>
+{% endblock %}
