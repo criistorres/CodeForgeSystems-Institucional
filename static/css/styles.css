@@ -686,7 +686,7 @@
 .clients-carousel {
     position: relative;
     width: 100%;
-    height: 140px;
+    height: 180px;
 }
 
 .carousel-track {
@@ -723,24 +723,16 @@
 /* Client Logo Items */
 .client-logo-item {
     flex-shrink: 0;
-    width: 280px;
-    height: 120px;
+    width: 350px;
+    height: 160px;
     position: relative;
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .client-logo-container {
-    background: rgba(255, 255, 255, 0.03);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 16px;
-    padding: 1.5rem;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
     position: relative;
+    height: 100%;
+    border-radius: 16px;
     overflow: hidden;
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -755,57 +747,85 @@
     background: linear-gradient(
         90deg,
         transparent,
-        rgba(255, 255, 255, 0.1),
+        rgba(255, 255, 255, 0.2),
         transparent
     );
     transition: left 0.6s ease;
+    z-index: 3;
 }
 
-/* Logo Styles */
+/* Logo Styles - Agora ocupa todo o card */
 .client-logo {
-    max-width: 160px;
-    max-height: 60px;
-    width: auto;
-    height: auto;
+    width: 100%;
+    height: 100%;
     object-fit: contain;
+    object-position: center;
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    
-    /* Initial state: grayscale and reduced opacity */
-    filter: grayscale(100%) brightness(0.7);
-    opacity: 0.6;
 }
 
-/* Client Info */
-.client-info {
-    margin-top: 0.75rem;
-    text-align: center;
+/* Overlay para melhor legibilidade do texto - aparece apenas no hover */
+.client-logo-container::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+        135deg,
+        rgba(0, 0, 0, 0.6) 0%,
+        rgba(0, 0, 0, 0.3) 50%,
+        rgba(0, 0, 0, 0.7) 100%
+    );
+    z-index: 1;
     opacity: 0;
-    transform: translateY(10px);
+    transition: all 0.4s ease;
+}
+
+/* Client Info - Aparece apenas no hover */
+.client-info {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 1rem;
+    background: linear-gradient(
+        to top,
+        rgba(0, 0, 0, 0.9) 0%,
+        rgba(0, 0, 0, 0.5) 70%,
+        transparent 100%
+    );
+    z-index: 2;
+    opacity: 0;
+    transform: translateY(20px);
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    text-align: left;
 }
 
 .client-info h4 {
-    font-size: 0.875rem;
-    font-weight: 600;
+    font-size: 1rem;
+    font-weight: 700;
     color: white;
     margin-bottom: 0.25rem;
     line-height: 1.2;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    letter-spacing: 0.025em;
 }
 
 .client-info span {
-    font-size: 0.75rem;
-    color: rgba(148, 163, 184, 0.8);
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.9);
     font-weight: 400;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
+    line-height: 1.3;
 }
 
 /* Hover Effects */
 .client-logo-item:hover .client-logo-container {
-    background: rgba(255, 255, 255, 0.08);
-    border-color: rgba(168, 85, 247, 0.3);
-    transform: translateY(-4px) scale(1.02);
+    transform: translateY(-8px) scale(1.03);
     box-shadow: 
-        0 20px 40px rgba(0, 0, 0, 0.3),
-        0 0 0 1px rgba(168, 85, 247, 0.1);
+        0 25px 50px rgba(0, 0, 0, 0.25),
+        0 0 0 1px rgba(168, 85, 247, 0.2);
 }
 
 .client-logo-item:hover .client-logo-container::before {
@@ -813,10 +833,12 @@
 }
 
 .client-logo-item:hover .client-logo {
-    /* Remove grayscale and restore original colors */
-    filter: grayscale(0%) brightness(1);
-    opacity: 1;
+    filter: brightness(0.7) contrast(1.1);
     transform: scale(1.05);
+}
+
+.client-logo-item:hover .client-logo-container::after {
+    opacity: 1;
 }
 
 .client-logo-item:hover .client-info {
@@ -824,24 +846,40 @@
     transform: translateY(0);
 }
 
+.client-logo-item:hover .client-info h4 {
+    color: white;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
+}
+
+.client-logo-item:hover .client-info span {
+    color: rgba(255, 255, 255, 0.95);
+}
+
 /* Responsive Design */
 @media (max-width: 1024px) {
+    .clients-carousel {
+        height: 150px;
+    }
+    
     .carousel-track {
         gap: 3rem;
     }
     
     .client-logo-item {
-        width: 240px;
-        height: 100px;
+        width: 300px;
+        height: 130px;
     }
     
-    .client-logo-container {
-        padding: 1.25rem;
+    .client-info {
+        padding: 0.75rem;
     }
     
-    .client-logo {
-        max-width: 140px;
-        max-height: 50px;
+    .client-info h4 {
+        font-size: 0.9rem;
+    }
+    
+    .client-info span {
+        font-size: 0.8rem;
     }
     
     .carousel-track-1 {
@@ -851,7 +889,7 @@
 
 @media (max-width: 768px) {
     .clients-carousel {
-        height: 120px;
+        height: 140px;
     }
     
     .carousel-track {
@@ -859,17 +897,53 @@
     }
     
     .client-logo-item {
-        width: 200px;
-        height: 90px;
+        width: 260px;
+        height: 120px;
     }
     
-    .client-logo-container {
-        padding: 1rem;
+    .client-info {
+        padding: 0.5rem;
     }
     
-    .client-logo {
-        max-width: 120px;
-        max-height: 40px;
+    .client-info h4 {
+        font-size: 0.85rem;
+        margin-bottom: 0.125rem;
+    }
+    
+    .client-info span {
+        font-size: 0.75rem;
+    }
+    
+    .carousel-track-1 {
+        animation-duration: 25s;
+    }
+    
+    /* Simplificar hover effects no mobile */
+    .client-logo-item:hover .client-logo-container {
+        transform: translateY(-4px) scale(1.02);
+    }
+}
+
+@media (max-width: 480px) {
+    .clients-carousel-wrapper {
+        padding: 1rem 0;
+    }
+    
+    .clients-carousel {
+        height: 120px;
+    }
+    
+    .carousel-track {
+        gap: 1.5rem;
+    }
+    
+    .client-logo-item {
+        width: 220px;
+        height: 100px;
+    }
+    
+    .client-info {
+        padding: 0.4rem;
     }
     
     .client-info h4 {
@@ -881,45 +955,7 @@
     }
     
     .carousel-track-1 {
-        animation-duration: 25s;
-    }
-}
-
-@media (max-width: 480px) {
-    .clients-carousel-wrapper {
-        padding: 1rem 0;
-    }
-    
-    .clients-carousel {
-        height: 100px;
-    }
-    
-    .carousel-track {
-        gap: 1.5rem;
-    }
-    
-    .client-logo-item {
-        width: 180px;
-        height: 80px;
-    }
-    
-    .client-logo-container {
-        padding: 0.75rem;
-        border-radius: 12px;
-    }
-    
-    .client-logo {
-        max-width: 100px;
-        max-height: 35px;
-    }
-    
-    .carousel-track-1 {
         animation-duration: 20s;
-    }
-    
-    /* Simplify hover effects on mobile */
-    .client-logo-item:hover .client-logo-container {
-        transform: translateY(-2px) scale(1.01);
     }
 }
 
@@ -940,10 +976,19 @@
     opacity: 0;
     transition: opacity 0.4s ease;
     pointer-events: none;
+    z-index: 4;
 }
 
 .client-logo-item:hover::before {
     opacity: 1;
+}
+
+/* Fallback para quando não há imagem */
+.client-logo[src*="placeholder"] {
+    object-fit: contain;
+    padding: 1rem;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    filter: none;
 }
 
 /* Accessibility */
@@ -969,6 +1014,14 @@
     .client-logo-item {
         position: static;
     }
+    
+    .client-logo-item:hover .client-logo-container {
+        transform: none;
+    }
+    
+    .client-logo-item:hover .client-logo {
+        transform: none;
+    }
 }
 
 /* Print styles */
@@ -988,6 +1041,62 @@
     
     .client-logo {
         filter: none !important;
-        opacity: 1 !important;
     }
+    
+    .client-info {
+        background: rgba(0, 0, 0, 0.1) !important;
+        color: black !important;
+    }
+    
+    .client-info h4,
+    .client-info span {
+        color: black !important;
+        text-shadow: none !important;
+    }
+}
+
+/* Especial para logos sem fundo ou muito claros */
+.client-logo-item[data-light-logo="true"] .client-logo-container::after {
+    background: linear-gradient(
+        135deg,
+        rgba(0, 0, 0, 0.6) 0%,
+        rgba(0, 0, 0, 0.3) 50%,
+        rgba(0, 0, 0, 0.7) 100%
+    );
+}
+/* Form styles for light backgrounds */
+.form-input-light {
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(100, 116, 139, 0.3);
+    color: #1e293b; /* slate-800 */
+    transition: all 0.3s ease;
+}
+
+.form-input-light:focus {
+    border-color: #a855f7;
+    box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.1);
+    outline: none;
+    background: rgba(255, 255, 255, 1);
+}
+
+.form-input-light::placeholder {
+    color: rgba(100, 116, 139, 0.6); /* slate-500 with opacity */
+}
+
+/* Override for contact page specifically */
+.contact-form .form-input {
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(100, 116, 139, 0.3);
+    color: #1e293b;
+}
+
+.contact-form .form-input:focus {
+    border-color: #a855f7;
+    box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.1);
+    outline: none;
+    background: rgba(255, 255, 255, 1);
+}
+
+.contact-form .form-input::placeholder {
+    color: rgba(100, 116, 139, 0.6);
 }

@@ -57,11 +57,11 @@ class TerminalStatus {
     constructor(elementId) {
         this.element = document.getElementById(elementId);
         this.statuses = [
-            'Iniciando sistema...',
-            'Carregando módulos...',
+            'Carregando expertise...',
+            'Inicializando stack...',
             'Conectando APIs...',
-            'Sistema online ✓',
-            'Pronto para inovar!'
+            'Deploy concluído ✓',
+            'Sistema operacional!'
         ];
         this.currentIndex = 0;
         this.start();
@@ -88,15 +88,16 @@ class TerminalStatus {
 
 // Inicializar efeitos quando a página carregar
 document.addEventListener('DOMContentLoaded', function() {
-    // Palavras rotativas para o typewriter
+    // Palavras rotativas para o typewriter - ATUALIZADAS PARA REFLETIR ESCOPO AMPLO
     const rotatingWords = [
-        'o futuro',
-        'seu negócio', 
+        'sistemas',
+        'integrações', 
         'soluções',
-        'resultados',
+        'o futuro',
         'sua visão',
         'inovação',
-        'transformação'
+        'resultados',
+        'tecnologia'
     ];
     
     // Inicializar Typewriter Effect
@@ -114,7 +115,7 @@ document.addEventListener('DOMContentLoaded', function() {
         new TerminalStatus('terminal-status');
     }
     
-    // Inicializar Particles.js
+    // Inicializar Particles.js - OTIMIZADO PARA PERFORMANCE
     if (document.getElementById('particles-js')) {
         initParticles();
     }
@@ -122,26 +123,26 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // WhatsApp Function
 function openWhatsApp() {
-    const phoneNumber = "5511999999999"; // Substitua pelo número real
-    const message = "Olá! Gostaria de saber mais sobre os serviços da CodeForge Systems.";
+    const phoneNumber = "5511992950205"; // Número atualizado da proposta
+    const message = "Olá! Gostaria de saber mais sobre as soluções tecnológicas da CodeForge Systems.";
     const encodedMessage = encodeURIComponent(message);
     const whatsappURL = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
     window.open(whatsappURL, '_blank');
 }
 
-// Particles.js Configuration
+// Particles.js Configuration - OTIMIZADO
 function initParticles() {
     particlesJS('particles-js', {
         "particles": {
             "number": {
-                "value": 80,
+                "value": 60, // Reduzido para melhor performance
                 "density": {
                     "enable": true,
                     "value_area": 800
                 }
             },
             "color": {
-                "value": ["#a855f7", "#06d6a0", "#3b82f6", "#10b981", "#f59e0b"]
+                "value": ["#a855f7", "#06d6a0", "#3b82f6", "#10b981"]
             },
             "shape": {
                 "type": "circle",
@@ -151,7 +152,7 @@ function initParticles() {
                 }
             },
             "opacity": {
-                "value": 0.6,
+                "value": 0.5, // Reduzido para ser menos distrativo
                 "random": true,
                 "anim": {
                     "enable": true,
@@ -174,12 +175,12 @@ function initParticles() {
                 "enable": true,
                 "distance": 150,
                 "color": "#a855f7",
-                "opacity": 0.4,
+                "opacity": 0.3, // Reduzido
                 "width": 1
             },
             "move": {
                 "enable": true,
-                "speed": 2,
+                "speed": 1.5, // Mais lento para ser menos distrativo
                 "direction": "none",
                 "random": false,
                 "straight": false,
@@ -209,7 +210,7 @@ function initParticles() {
                 "grab": {
                     "distance": 200,
                     "line_linked": {
-                        "opacity": 0.8
+                        "opacity": 0.6
                     }
                 },
                 "bubble": {
@@ -331,6 +332,8 @@ window.addEventListener('scroll', () => {
 // Navbar dinâmica com transição gradual
 window.addEventListener('scroll', () => {
     const header = document.querySelector('header');
+    if (!header) return;
+    
     const scrolled = window.scrollY;
     const heroHeight = window.innerHeight;
     const scrollProgress = Math.min(scrolled / (heroHeight * 0.3), 1);
@@ -351,14 +354,55 @@ window.addEventListener('scroll', () => {
     }
 });
 
-// CTAs com eventos
+// CTAs com eventos - ATUALIZADOS
 document.querySelectorAll('button').forEach(button => {
-    if (button.textContent.includes('Solicite uma Proposta') || 
-        button.textContent.includes('Fale Conosco Agora') ||
-        button.textContent.includes('Fale Conosco')) {
+    const buttonText = button.textContent.trim();
+    
+    // CTAs principais
+    if (buttonText.includes('Solicitar Análise Gratuita') || 
+        buttonText.includes('Agendar Consultoria Gratuita') ||
+        buttonText.includes('Fale Conosco')) {
         button.addEventListener('click', () => {
-            // Aqui você pode adicionar integração com formulário ou WhatsApp
             openWhatsApp();
+        });
+    }
+    
+    // CTA secundário - scroll para metodologia
+    if (buttonText.includes('Conhecer Nossa Metodologia')) {
+        button.addEventListener('click', () => {
+            // Buscar pela seção que contém "Metodologia" no título
+            const headings = document.querySelectorAll('h2, h3');
+            let metodologiaSection = null;
+            
+            headings.forEach(heading => {
+                if (heading.textContent.includes('Metodologia')) {
+                    metodologiaSection = heading.closest('section');
+                }
+            });
+            
+            if (metodologiaSection) {
+                metodologiaSection.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            } else {
+                // Fallback: scroll para uma seção específica por ID se existir
+                const fallbackSection = document.querySelector('#metodologia') || 
+                                       document.querySelector('[data-section="metodologia"]');
+                if (fallbackSection) {
+                    fallbackSection.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            }
+        });
+    }
+    
+    // Ver Nossos Projetos - scroll para produtos
+    if (buttonText.includes('Ver Nossos Projetos')) {
+        button.addEventListener('click', () => {
+            window.location.href = '/produtos/';
         });
     }
 });
@@ -688,31 +732,7 @@ class ClientsCarousel {
 document.addEventListener('DOMContentLoaded', function() {
     // Initialize clients carousel
     window.clientsCarousel = new ClientsCarousel();
-    
-    // Optional: Add dynamic client loading
-    // loadClientsFromAPI();
 });
-
-// Optional: Function to load clients from API
-function loadClientsFromAPI() {
-    // Example of how you could load clients dynamically
-    /*
-    fetch('/api/clients/')
-        .then(response => response.json())
-        .then(clients => {
-            clients.forEach(client => {
-                window.clientsCarousel.addClient({
-                    name: client.name,
-                    logoUrl: client.logo_url,
-                    description: client.description
-                });
-            });
-        })
-        .catch(error => {
-            console.warn('Erro ao carregar clientes:', error);
-        });
-    */
-}
 
 // Utility function for smooth scrolling to clients section
 function scrollToClients() {

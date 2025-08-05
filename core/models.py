@@ -71,3 +71,41 @@ class ContactMessage(models.Model):
     
     def __str__(self):
         return f'{self.name} - {self.get_subject_display()}'
+
+
+class Client(models.Model):
+    name = models.CharField(max_length=100, verbose_name='Nome do Cliente')
+    description = models.CharField(max_length=200, verbose_name='Descrição/Segmento')
+    logo = models.ImageField(
+        upload_to='clients/logos/', 
+        verbose_name='Logo',
+        help_text='Recomendado: PNG/SVG transparente, proporção 2:1 (ex: 200x100px)'
+    )
+    website_url = models.URLField(blank=True, null=True, verbose_name='Site')
+    is_featured = models.BooleanField(
+        default=False, 
+        verbose_name='Cliente Destaque',
+        help_text='Clientes em destaque aparecem primeiro no carrossel'
+    )
+    order = models.PositiveIntegerField(
+        default=0, 
+        verbose_name='Ordem de Exibição',
+        help_text='Números menores aparecem primeiro'
+    )
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name='Adicionado em')
+    updated_at = models.DateTimeField(auto_now=True, verbose_name='Atualizado em')
+    
+    class Meta:
+        verbose_name = 'Cliente'
+        verbose_name_plural = 'Clientes'
+        ordering = ['-is_featured', 'order', 'name']
+    
+    def __str__(self):
+        return self.name
+    
+    @property
+    def logo_url(self):
+        """Retorna URL do logo ou placeholder se não existir"""
+        if self.logo and hasattr(self.logo, 'url'):
+            return self.logo.url
+        return f"https://via.placeholder.com/200x80/FFFFFF/333333?text={self.name.replace(' ', '+')}"
