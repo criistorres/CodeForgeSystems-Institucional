@@ -441,3 +441,291 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+
+// ===== CLIENTS CAROUSEL FUNCTIONALITY =====
+
+class ClientsCarousel {
+    constructor() {
+        this.carousel = document.getElementById('clients-carousel');
+        this.track = null;
+        this.isVisible = false;
+        this.isHovered = false;
+        this.animationSpeed = 35; // seconds
+        
+        this.init();
+    }
+    
+    init() {
+        if (!this.carousel) return;
+        
+        this.track = this.carousel.querySelector('.carousel-track');
+        if (!this.track) return;
+        
+        this.setupIntersectionObserver();
+        this.setupEventListeners();
+        this.setupAccessibility();
+        this.optimizeForPerformance();
+    }
+    
+    setupIntersectionObserver() {
+        // Pause animation when not visible for performance
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                this.isVisible = entry.isIntersecting;
+                this.updateAnimationState();
+            });
+        }, {
+            threshold: 0.1
+        });
+        
+        observer.observe(this.carousel);
+    }
+    
+    setupEventListeners() {
+        const wrapper = this.carousel.closest('.clients-carousel-wrapper');
+        if (!wrapper) return;
+        
+        // Hover events for pausing animation
+        wrapper.addEventListener('mouseenter', () => {
+            this.isHovered = true;
+            this.updateAnimationState();
+        });
+        
+        wrapper.addEventListener('mouseleave', () => {
+            this.isHovered = false;
+            this.updateAnimationState();
+        });
+        
+        // Focus events for accessibility
+        const logoItems = wrapper.querySelectorAll('.client-logo-item');
+        logoItems.forEach(item => {
+            item.addEventListener('focusin', () => {
+                this.isHovered = true;
+                this.updateAnimationState();
+            });
+            
+            item.addEventListener('focusout', () => {
+                this.isHovered = false;
+                this.updateAnimationState();
+            });
+        });
+        
+        // Touch events for mobile
+        let touchStartX = 0;
+        let touchEndX = 0;
+        
+        wrapper.addEventListener('touchstart', (e) => {
+            touchStartX = e.touches[0].clientX;
+            this.isHovered = true;
+            this.updateAnimationState();
+        });
+        
+        wrapper.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].clientX;
+            this.handleSwipe(touchStartX, touchEndX);
+            
+            // Resume animation after touch
+            setTimeout(() => {
+                this.isHovered = false;
+                this.updateAnimationState();
+            }, 1000);
+        });
+    }
+    
+    updateAnimationState() {
+        if (!this.track) return;
+        
+        const shouldPause = this.isHovered || !this.isVisible;
+        this.track.style.animationPlayState = shouldPause ? 'paused' : 'running';
+    }
+    
+    handleSwipe(startX, endX) {
+        const threshold = 50;
+        const difference = startX - endX;
+        
+        if (Math.abs(difference) > threshold) {
+            // Add visual feedback for swipe
+            const wrapper = this.carousel.closest('.clients-carousel-wrapper');
+            if (wrapper) {
+                wrapper.style.transform = difference > 0 ? 'translateX(-10px)' : 'translateX(10px)';
+                setTimeout(() => {
+                    wrapper.style.transform = 'translateX(0)';
+                }, 200);
+            }
+        }
+    }
+    
+    setupAccessibility() {
+        const wrapper = this.carousel.closest('.clients-carousel-wrapper');
+        const logoItems = wrapper.querySelectorAll('.client-logo-item');
+        
+        // Add ARIA labels and make items focusable
+        wrapper.setAttribute('role', 'region');
+        wrapper.setAttribute('aria-label', 'Clientes da CodeForge Systems');
+        
+        logoItems.forEach((item, index) => {
+            const container = item.querySelector('.client-logo-container');
+            const img = item.querySelector('.client-logo');
+            const info = item.querySelector('.client-info h4');
+            
+            if (container && img && info) {
+                container.setAttribute('tabindex', '0');
+                container.setAttribute('role', 'button');
+                container.setAttribute('aria-label', `Cliente: ${info.textContent}`);
+                
+                // Add keyboard interaction
+                container.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        this.showClientDetails(info.textContent);
+                    }
+                });
+            }
+        });
+    }
+    
+    showClientDetails(clientName) {
+        // Optional: Add a modal or tooltip with client details
+        console.log(`Mostrando detalhes do cliente: ${clientName}`);
+        
+        // You can implement a modal or redirect here
+        // For now, just add a subtle visual feedback
+        const activeItem = document.querySelector('.client-logo-item:hover .client-logo-container, .client-logo-item:focus-within .client-logo-container');
+        if (activeItem) {
+            activeItem.style.transform = 'translateY(-6px) scale(1.03)';
+            setTimeout(() => {
+                activeItem.style.transform = '';
+            }, 300);
+        }
+    }
+    
+    optimizeForPerformance() {
+        // Use will-change for better performance
+        if (this.track) {
+            this.track.style.willChange = 'transform';
+        }
+        
+        // Optimize for reduced motion preference
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            this.disableAnimation();
+        }
+        
+        // Listen for reduced motion changes
+        window.matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change', (e) => {
+            if (e.matches) {
+                this.disableAnimation();
+            } else {
+                this.enableAnimation();
+            }
+        });
+    }
+    
+    disableAnimation() {
+        if (this.track) {
+            this.track.style.animation = 'none';
+            this.track.style.transform = 'translateX(0)';
+        }
+        
+        const wrapper = this.carousel.closest('.clients-carousel-wrapper');
+        if (wrapper) {
+            wrapper.style.overflowX = 'auto';
+            wrapper.style.mask = 'none';
+            wrapper.style.webkitMask = 'none';
+        }
+    }
+    
+    enableAnimation() {
+        if (this.track) {
+            this.track.style.animation = '';
+            this.track.style.transform = '';
+        }
+        
+        const wrapper = this.carousel.closest('.clients-carousel-wrapper');
+        if (wrapper) {
+            wrapper.style.overflowX = 'hidden';
+            wrapper.style.mask = '';
+            wrapper.style.webkitMask = '';
+        }
+    }
+    
+    // Public method to update carousel speed
+    setSpeed(seconds) {
+        this.animationSpeed = seconds;
+        if (this.track) {
+            this.track.style.animationDuration = `${seconds}s`;
+        }
+    }
+    
+    // Public method to add new client
+    addClient(clientData) {
+        if (!this.track) return;
+        
+        const clientElement = this.createClientElement(clientData);
+        this.track.appendChild(clientElement);
+    }
+    
+    createClientElement(data) {
+        const item = document.createElement('div');
+        item.className = 'client-logo-item';
+        
+        item.innerHTML = `
+            <div class="client-logo-container">
+                <img src="${data.logoUrl}" 
+                     alt="${data.name}" 
+                     class="client-logo">
+                <div class="client-info">
+                    <h4>${data.name}</h4>
+                    <span>${data.description}</span>
+                </div>
+            </div>
+        `;
+        
+        return item;
+    }
+}
+
+// Initialize carousel when DOM is loaded
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize clients carousel
+    window.clientsCarousel = new ClientsCarousel();
+    
+    // Optional: Add dynamic client loading
+    // loadClientsFromAPI();
+});
+
+// Optional: Function to load clients from API
+function loadClientsFromAPI() {
+    // Example of how you could load clients dynamically
+    /*
+    fetch('/api/clients/')
+        .then(response => response.json())
+        .then(clients => {
+            clients.forEach(client => {
+                window.clientsCarousel.addClient({
+                    name: client.name,
+                    logoUrl: client.logo_url,
+                    description: client.description
+                });
+            });
+        })
+        .catch(error => {
+            console.warn('Erro ao carregar clientes:', error);
+        });
+    */
+}
+
+// Utility function for smooth scrolling to clients section
+function scrollToClients() {
+    const clientsSection = document.getElementById('clientes');
+    if (clientsSection) {
+        clientsSection.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+        });
+    }
+}
+
+// Export for use in other modules if needed
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = { ClientsCarousel, scrollToClients };
+}
