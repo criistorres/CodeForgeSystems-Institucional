@@ -181,3 +181,4 @@ cython_debug/
 .cursorindexingignore
 media/clients/logos/logoHavanna2.png
 *.png
+/staticfiles

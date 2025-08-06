@@ -1,3 +1,16 @@
-asgiref==3.9.1
+# Django e dependências principais
 Django==5.2.4
-sqlparse==0.5.3
+pillow==10.0.0
+
+# Banco de dados
+psycopg2-binary==2.9.7
+
+# Servidor de produção
+gunicorn==21.2.0
+
+# Utilitários
+python-decouple==3.8
+whitenoise==6.5.0
+
+# Desenvolvimento (opcional)
+django-debug-toolbar==4.2.0
