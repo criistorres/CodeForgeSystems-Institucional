@@ -104,7 +104,7 @@ python manage.py runserver
 
 ### Superusuário Admin
 - **Usuário**: `admin`
-- **Email**: `admin@codeforge.com.br`
+- **Email**: `comercial@codeforgeit.com.br`
 - **Senha**: `admin123`
 - **Nome**: Admin CodeForge
 

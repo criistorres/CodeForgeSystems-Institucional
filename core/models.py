@@ -109,3 +109,41 @@ class Client(models.Model):
         if self.logo and hasattr(self.logo, 'url'):
             return self.logo.url
         return f"https://via.placeholder.com/200x80/FFFFFF/333333?text={self.name.replace(' ', '+')}"
+    
+
+class Partner(models.Model):
+    name = models.CharField(max_length=100, verbose_name='Nome do Parceiro')
+    description = models.CharField(max_length=200, verbose_name='Descrição/Segmento')
+    logo = models.ImageField(
+        upload_to='partners/logos/', 
+        verbose_name='Logo',
+        help_text='Recomendado: PNG/SVG transparente, proporção 2:1 (ex: 200x100px)'
+    )
+    website_url = models.URLField(blank=True, null=True, verbose_name='Site')
+    is_featured = models.BooleanField(
+        default=False, 
+        verbose_name='Parceiro Destaque',
+        help_text='Parceiros em destaque aparecem primeiro no carrossel'
+    )
+    order = models.PositiveIntegerField(
+        default=0, 
+        verbose_name='Ordem de Exibição',
+        help_text='Números menores aparecem primeiro'
+    )
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name='Adicionado em')
+    updated_at = models.DateTimeField(auto_now=True, verbose_name='Atualizado em')
+    
+    class Meta:
+        verbose_name = 'Parceiro'
+        verbose_name_plural = 'Parceiros'
+        ordering = ['-is_featured', 'order', 'name']
+    
+    def __str__(self):
+        return self.name
+    
+    @property
+    def logo_url(self):
+        """Retorna URL do logo ou placeholder se não existir"""
+        if self.logo and hasattr(self.logo, 'url'):
+            return self.logo.url
+        return f"https://via.placeholder.com/200x80/FFFFFF/333333?text={self.name.replace(' ', '+')}"

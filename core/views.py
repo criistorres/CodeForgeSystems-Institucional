@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
-from .models import Product, ContactMessage, Client
+from .models import Product, ContactMessage, Client, Partner
 from .forms import ContactForm, SimpleContactForm
 
 
@@ -23,10 +23,12 @@ def home(request):
     
     # Buscar clientes para o carrossel
     clients = Client.objects.filter().order_by('-is_featured', 'order', 'name')
+    partners = Partner.objects.filter().order_by('-is_featured', 'order', 'name')
     
     context = {
         'simple_form': simple_form,
         'clients': clients,
+        'partners': partners,
     }
     return render(request, 'core/home.html', context)
 

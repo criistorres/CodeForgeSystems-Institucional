@@ -702,7 +702,11 @@
 }
 
 .carousel-track-1 {
-    animation-duration: 35s;
+    animation: scroll-right 20s linear infinite; /* Reduzido de 30s para 20s */
+}
+
+.carousel-track-partners {
+    animation: scroll-left 25s linear infinite; /* Velocidade diferente para variação */
 }
 
 /* Carousel Animation */
@@ -712,6 +716,16 @@
     }
     100% {
         transform: translateX(0%);
+    }
+}
+
+/* Animação para esquerda (parceiros) */
+@keyframes scroll-left {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-100%);
     }
 }
 
@@ -1099,4 +1113,28 @@
 
 .contact-form .form-input::placeholder {
     color: rgba(100, 116, 139, 0.6);
+}
+
+/* Wrapper para parceiros */
+.partners-carousel-wrapper {
+    overflow: hidden;
+    mask: linear-gradient(
+        90deg,
+        transparent,
+        white 10%,
+        white 90%,
+        transparent
+    );
+    -webkit-mask: linear-gradient(
+        90deg,
+        transparent,
+        white 10%,
+        white 90%,
+        transparent
+    );
+}
+
+.partners-carousel {
+    display: flex;
+    width: 200%;
 }

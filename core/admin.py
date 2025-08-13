@@ -124,3 +124,14 @@ class ClientAdmin(admin.ModelAdmin):
     remove_featured.short_description = 'Remover do destaque'
     
     actions = [make_featured, remove_featured]
+
+from django.contrib import admin
+from .models import Product, ContactMessage, Client, Partner
+
+@admin.register(Partner)
+class PartnerAdmin(admin.ModelAdmin):
+    list_display = ['name', 'description', 'is_featured', 'order', 'created_at']
+    list_filter = ['is_featured', 'created_at']
+    search_fields = ['name', 'description']
+    list_editable = ['is_featured', 'order']
+    ordering = ['-is_featured', 'order', 'name']

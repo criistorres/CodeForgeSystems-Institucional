@@ -28,7 +28,7 @@ User = get_user_model()
 if not User.objects.filter(is_superuser=True).exists():
     User.objects.create_superuser(
         username='admin',
-        email='admin@codeforge.com.br',
+        email='comercial@codeforgeit.com.br',
         password='admin123',
         first_name='Administrador',
         last_name='CodeForge'
